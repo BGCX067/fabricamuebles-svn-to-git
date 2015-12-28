@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/masterLayout.xhtml">
+
+	<ui:define name="title">#{resourceBundle['wood.admin.title']}</ui:define>
+	<ui:define name="body_title">#{resourceBundle['wood.admin.title']}</ui:define>
+
+	<ui:define name="body">
+        <style type="text/css">
+            .tableWidth {width: 845px;}
+            td{white-space:nowrap;}
+        </style>
+		<h:form id="editWoodForm" prependId="false">
+            <h:panelGroup layout="block" styleClass="tableWidth">
+                <p:panelGrid styleClass="no-border-panelgrid tableWidth">
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="#{resourceBundle['wood.admin.width']}:" />
+                        </p:column>
+                        <p:column colspan="2">
+                            <p:inputText value="#{woodModel.width}" id="width" label="wood.admin.width" size="10"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="width" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="#{resourceBundle['wood.admin.height']}:" />
+                        </p:column>
+                        <p:column colspan="2">
+                            <p:inputText value="#{woodModel.height}" id="height" label="wood.admin.height" size="10"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="height" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="#{resourceBundle['wood.admin.depth']}:" />
+                        </p:column>
+                        <p:column colspan="2">
+                            <p:inputText value="#{woodModel.depth}" id="depth" label="wood.admin.depth" size="10"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="depth" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="#{resourceBundle['description']}:" />
+                        </p:column>
+                        <p:column colspan="2">
+                            <p:inputTextarea value="#{woodModel.description}" id="description" label="#{resourceBundle['description']}" rows="3" cols="60"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="description" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="width: 1%;">
+                            <h:outputText value="#{resourceBundle['wood.woodType']}:" />
+                        </p:column>
+                        <p:column style="width: 1%;">
+                            <p:selectOneMenu id="woodType" value="#{woodModel.woodType}">
+                                <f:selectItems value="#{woodModel.woodTypeList}" var="woodType" itemLabel="#{woodType.name}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:commandLink update="@form" action="newWoodType">
+                                <h:graphicImage library="images" name="add.gif" alt="#{resourceBundle['new']}" title="#{resourceBundle['new']}"/>
+                            </p:commandLink>
+                            <p:commandLink update="@form" action="editWoodType">
+                                <h:graphicImage library="images" name="edit.gif" alt="#{resourceBundle['edit']}" title="#{resourceBundle['edit']}"/>
+                            </p:commandLink>
+                        </p:column>
+                        <p:column>
+                            <p:message for="woodType" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <h:panelGroup layout="block" style="float: right;">
+                    <p:commandButton value="#{resourceBundle['accept']}" update="@form"
+                        action="confirm"/>
+
+                    <p:commandButton value="#{resourceBundle['cancel']}"
+                        action="cancel" immediate="true"/>
+                </h:panelGroup>
+            </h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

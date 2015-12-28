@@ -1,0 +1,18 @@
+-Para una actividad dada, de acuerdo al requerimiento de salida, se podrian usar distintas estrategias donde cada estrategia puede definirse con una entrada en particular y una cantidad de salida en particular (tratandose siempre de la misma salida)
+
+-Ver el tema de que una actividad pueda empezar lo mas temprano posible sin necesidad que la anterior haya finalizado por completo. Tratar de que no haya tiempos muertos en la ejecucion de la segunda actividad dado que usaria personal de forma ociosa.
+
+-para el calculo de el tiempo para comenzar una actividad B  que le sigue a la actividad A, mientras la actividad A aun se esta realizando, se toma como punto de partida a la finalizacion de la primera actividad y se retrocede desde ese punto la cantidad de tiempo que dura la actividad 2. La diferencia entre el tiempo total de la primera actividad(timpo de preparacion + timpo de produccion por cantidad de producto) y el tiempo total de la segunda actividad nos indica el punto de comienzo de la segunda actividad siempre que la misma no sea igual a 0 o negativa
+
+Ejemplo:
+
+1-Actividad Garlopeado ---- tiempo por producto 8 seg \\ tiempo preparacion 360 seg  \\ cantidad a producir 10 \\ total 440 seg
+
+2-Actividad Cepillado ---- tiempo por producto 5 seg \\ tiempo preparacion 360 seg \\ cantidad a producir 10 \\ total 405 seg
+
+la actividad 2 comienza a los 35 seg del inicio de la actividad 1. Este tiempo es el tiempo ideal suponiendo que el preciso instante en que se tiene disponible un fabricable de la activida uno se lo procesa en la actividad 2 a para tener una aproximacion mas realista se deberia sumar un tiempo de colchon a los 35 seg obtenidos
+
+
+
+
+

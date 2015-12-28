@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="madera" required="true" default="null" type="entidades.Madera"/>
+        <composite:attribute name="editable" required="false" default="false"/>
+        <composite:attribute name="groupbox" required="false" default="true"/>
+        <composite:attribute name="nuevo" default="false" />
+    </composite:interface>
+
+    <composite:implementation>
+        <c:if test="#{cc.attrs.groupbox}">
+            <p:fieldset legend="Madera" >
+                <c:if test="#{cc.attrs.nuevo == false}">
+                    <h:outputLabel for="tipoMadera">Tipo:</h:outputLabel>
+                    <h:inputText id="tipoMadera" value="#{cc.attrs.madera.maderaTipo.nombre}" readonly="true"/><br/>
+                </c:if>
+                <c:if test="#{cc.attrs.nuevo == true}">
+                    <h:outputLabel for="tipoMadera">Tipo:</h:outputLabel>
+                    <h:selectOneMenu id="tipoMadera" value="#{vistaArticulo.maderaTipoSeleccionadaCombo}">
+                        <f:selectItems value="#{vistaArticulo.devolverMaderaTiposCombo()}" />
+                    </h:selectOneMenu><br/>
+                </c:if>
+                <h:outputLabel for="medidas">Medidas:</h:outputLabel>
+                <h:panelGroup layout="block" id="medidas">
+                    <h:inputText id="altura" required="true" styleClass="camposCortos" value="#{cc.attrs.madera.alto}" readonly="#{!cc.attrs.editable}">
+                        <f:convertNumber />
+                    </h:inputText>x
+                    <h:inputText id="ancho" required="true" styleClass="camposCortos" value="#{cc.attrs.madera.ancho}" readonly="#{!cc.attrs.editable}">
+                        <f:convertNumber />
+                    </h:inputText>x
+                    <h:inputText id="largo" required="true" styleClass="camposCortos" value="#{cc.attrs.madera.largoOriginal}" readonly="#{!cc.attrs.editable}">
+                        <f:convertNumber />
+                    </h:inputText> 
+                    (ALTOxANCHOxLARGO)
+                </h:panelGroup>
+                <c:if test="#{cc.attrs.nuevo == false}">
+                    <label for="piesCubicos">Pies Cúbicos Calculados:</label>
+                    <input id="piesCubicos" value="#{cc.attrs.madera.calcularPiesCubicos()}" readonly="true"/>
+                </c:if>
+            </p:fieldset>
+        </c:if>
+    </composite:implementation>
+
+</html>

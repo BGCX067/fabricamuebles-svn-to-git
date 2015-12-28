@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+      abstract="true">
+    <end-state id="main" view="flowRedirect:main/home"/>
+    <end-state id="logout" view="externalRedirect:contextRelative:/basic/security/logout"/>
+    <end-state id="machine" view="flowRedirect:machine/search"/>
+    <end-state id="roles" view="flowRedirect:administration/roles/search"/>
+    <end-state id="supplier" view="flowRedirect:supplier/search"/>
+    <end-state id="users" view="flowRedirect:administration/users/search"/>
+    <end-state id="wood" view="flowRedirect:wood/search"/>
+    <end-state id="woodType" view="flowRedirect:woodType/search"/>
+    <end-state id="confirm">
+        <exception-handler bean="defaultExceptionHandler"/>
+    </end-state>
+    <global-transitions>
+        <transition on="main" to="main"/>
+        <transition on="logout" to="logout"/>
+        <transition on="machine" to="machine"/>
+        <transition on="roles" to="roles"/>
+        <transition on="supplier" to="supplier"/>
+        <transition on="users" to="users"/>
+        <transition on="wood" to="wood"/>
+        <transition on="woodType" to="woodType"/>
+    </global-transitions>
+</flow>

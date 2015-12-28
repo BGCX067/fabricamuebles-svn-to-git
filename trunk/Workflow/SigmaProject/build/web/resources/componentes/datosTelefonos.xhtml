@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="telefono" required="true" default="#{null}" type="entidades.Telefono"/>
+        <composite:attribute name="editable" required="false" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <c:if test="#{cc.attrs.editable}">
+            <h:outputLabel id="labelTipo" for="tipo">Tipo:</h:outputLabel>
+            <h:selectOneMenu id="tipo" value="#{vistaTelefono.tipoSeleccionado}">
+                <f:selectItems value="#{vistaTelefono.devolverTipos()}" />
+            </h:selectOneMenu><br/>
+        </c:if>
+        <c:if test="#{cc.attrs.editable == false}">
+            <h:outputLabel id="labelTipo2" for="tipo2">Tipo:</h:outputLabel>
+            <h:inputText id="tipo2" value="#{vistaTelefono.tipoSeleccionado}" readonly="true"/><br/>
+        </c:if>
+        <h:outputLabel id="labelNumero" for="numero">Número:</h:outputLabel>
+        <h:inputText id="numero" value="#{vistaTelefono.numero}" readonly="#{!cc.attrs.editable}"/><br/>
+    </composite:implementation>
+</html>

@@ -1,0 +1,18 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Listado de Órdenes de Compra</ui:define>
+    <ui:define name="titulo_pagina">Listado de Órdenes de Compra</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false">
+            <componentes:listadoOrdenesDeCompra vista="#{generico}" seleccionNavegable="true" objetoSeleccion="#{generico.ordenDeCompraSeleccionada}"/>
+            <p:commandButton ajax="false" styleClass="botonesBottom" value="Volver" action="/compras/index?faces-redirect=true"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

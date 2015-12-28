@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+      parent="transitions">
+    <persistence-context/>
+    <on-start>
+        <evaluate expression="supplierController.init()"/>
+    </on-start>
+    <view-state id="search" model="supplierModel">
+        <on-entry>
+            <evaluate expression="supplierController.search()"/>
+        </on-entry>
+        <transition on="search">
+            <evaluate expression="supplierController.search()"/>
+        </transition>
+        <transition on="delete" to="confirm">
+            <evaluate expression="supplierController.delete()"/>
+        </transition>
+        <transition on="edit" to="view">
+            <set name="flashScope.uid" value="supplierModel.editedEntity.uid"/>
+            <set name="flashScope.useCaseMode" value="'EDIT'" type="ar.edu.utn.sigmaproject.controller.UseCaseMode"/>
+        </transition>
+        <transition on="new" to="view">
+            <set name="flashScope.uid" value="''"/>
+            <set name="flashScope.useCaseMode" value="'NEW'" type="ar.edu.utn.sigmaproject.controller.UseCaseMode"/>
+        </transition>
+        <transition on="consult" to="view">
+            <set name="flashScope.uid" value="supplierModel.editedEntity.uid"/>
+            <set name="flashScope.useCaseMode" value="'CONSULT'" type="ar.edu.utn.sigmaproject.controller.UseCaseMode"/>
+        </transition>
+    </view-state>
+    <subflow-state id="view" subflow="supplier/view">
+        <input name="uid" value="uid"/>
+        <input name="useCaseMode" value="useCaseMode" type="ar.edu.utn.sigmaproject.controller.UseCaseMode" required="true"/>
+        <output name="resultUid"/>
+        <transition on="confirm" to="confirm"/>
+        <transition on="cancel" to="cancel"/>
+    </subflow-state>
+    <end-state id="cancel"/>
+    <end-state id="confirm" commit="true"/>
+</flow>
+

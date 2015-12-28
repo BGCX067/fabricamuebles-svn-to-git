@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+      parent="transitions">
+	<secured attributes="ROLE_ADM_ROL"/>
+    <persistence-context/>
+    <on-start>
+        <evaluate expression="roleController.init()"/>
+    </on-start>
+    <view-state id="search" model="roleModel">
+        <on-entry>
+            <evaluate expression="roleController.search()"/>
+        </on-entry>
+        <transition on="search">
+            <evaluate expression="roleController.search()"/>
+        </transition>
+        <transition on="delete" to="confirm">
+            <evaluate expression="roleController.delete()"/>
+        </transition>
+        <transition on="edit" to="view">
+            <set name="flashScope.uid" value="roleModel.editedEntity.uid"/>
+            <set name="flashScope.useCaseMode" value="'EDIT'"/>
+        </transition>
+        <transition on="new" to="view">
+            <set name="flashScope.uid" value="''"/>
+            <set name="flashScope.useCaseMode" value="'NEW'"/>
+        </transition>
+        <transition on="consult" to="view">
+            <set name="flashScope.uid" value="editedEntity.uid"/>
+            <set name="flashScope.useCaseMode" value="'CONSULT'"/>
+        </transition>
+    </view-state>
+    <subflow-state id="view" subflow="administration/roles/view">
+        <input name="uid" value="uid"/>
+        <input name="useCaseMode" value="useCaseMode" required="true"/>
+        <output name="resultUid"/>
+        <transition on="confirm" to="confirm"/>
+        <transition on="cancel" to="cancel"/>
+    </subflow-state>
+    <end-state id="cancel"/>
+    <end-state id="confirm" commit="true"/>
+</flow>

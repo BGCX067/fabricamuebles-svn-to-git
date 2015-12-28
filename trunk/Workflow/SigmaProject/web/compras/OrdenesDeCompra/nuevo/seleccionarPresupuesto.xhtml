@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Registrar Orden de Compra</ui:define>
+    <ui:define name="titulo_pagina">Registrar Orden de Compra</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false">
+            <p>Por favor, seleccione a un presupuesto:</p>
+            <componentes:listadoPresupuestos vista="#{VistaRegistrarOrdenDeCompra}" seleccion="true" objetoSeleccion="#{VistaRegistrarOrdenDeCompra.presupuestoSeleccionado}" />
+            <h:outputText styleClass="error" value="#{VistaRegistrarOrdenDeCompra.error}"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" action="/compras/index?faces-redirect=true" />
+                <p:commandButton ajax="false" value="Siguiente" action="#{VistaRegistrarOrdenDeCompra.seleccionarPresupuestoSiguiente}" />
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+

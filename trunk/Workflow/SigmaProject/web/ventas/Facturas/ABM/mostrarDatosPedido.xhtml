@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Datos de Pedido</ui:define>
+    <ui:define name="titulo_pagina">Datos de Pedido</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false" id="listado">
+            <p>A continuación se muestra los datos del Pedido seleccionado:</p>
+            <componentes:datosPedidos pedido="#{vistaPedido.pedidoSeleccionado}" mostrarEstado="true" editable="false" mostrarFechaRealEntrega="#{vistaPedido.pedidoSeleccionado.fechaEntregaReal == null ? 'false' : 'true'}"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" action="seleccionarPedidoCliente?faces-redirect=true"/>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

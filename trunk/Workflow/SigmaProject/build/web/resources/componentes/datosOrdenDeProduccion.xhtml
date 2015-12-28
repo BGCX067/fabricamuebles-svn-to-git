@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="ordenDeProduccion" required="true" type="entidades.OrdenDeProduccion" />
+        <composite:attribute name="mostrarDetalles" default="true"/>
+        <composite:attribute name="mostrarRequerimientosMateriales" default="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <h:form prependId="false">
+            <h:outputLabel for="fechaInicioEstimada">Fecha Inicio Estimada:</h:outputLabel>
+            <p:calendar id="fechaInicioEstimada" locale="es" disabled="true" pattern="dd/MM/yyyy" mode="popup" value="#{cc.attrs.ordenDeProduccion.fechaInicioEstimada}" /><br/>
+            <h:outputLabel for="fechaFinEstimada">Fecha Fin Estimada:</h:outputLabel>
+            <p:calendar id="fechaFinEstimada" locale="es" disabled="true" pattern="dd/MM/yyyy" mode="popup" value="#{cc.attrs.ordenDeProduccion.fechaFinEstimada}" /><br/>
+            <h:outputLabel for="estado">Estado:</h:outputLabel>
+            <h:inputText id="estado" value="#{cc.attrs.ordenDeProduccion.estado}" readonly="true" style="width: 16em;"/><br/>
+            <c:if test="#{cc.attrs.mostrarDetalles == true}">
+                <p>Detalles:</p>
+            </c:if>
+            <p:dataTable value="#{cc.attrs.ordenDeProduccion.detalles}"
+                         var="detalle"
+                         rendered="#{cc.attrs.mostrarDetalles}"
+                         paginator="true"
+                         rows="5"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos"
+                         loadingMessage="Cargando...">
+                <p:column>
+                    <f:facet name="header">
+                        Modelo Mueble
+                    </f:facet>
+                    #{detalle.muebleModelo.nombre}
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Cantidad
+                    </f:facet>
+                    #{detalle.cantidad}
+                </p:column>
+            </p:dataTable>
+            <c:if test="#{cc.attrs.mostrarRequerimientosMateriales == true}">
+                <p>Requerimientos de Materiales:</p>
+            </c:if>
+            <p:dataTable value="#{cc.attrs.ordenDeProduccion.requerimientoMateriales}"
+                         var="requerimientoMaterial"
+                         rendered="#{cc.attrs.mostrarRequerimientosMateriales}"
+                         paginator="true"
+                         rows="5"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos"
+                         loadingMessage="Cargando...">
+                <p:column>
+                    <f:facet name="header">
+                        Tipo
+                    </f:facet>
+                    #{requerimientoMaterial.itemRequerible.tipo}
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Nombre
+                    </f:facet>
+                    #{requerimientoMaterial.itemRequerible.nombre}
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Cant. Requerida
+                    </f:facet>
+                    #{requerimientoMaterial.cantidadRequerida}
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Cant. en Tránsito
+                    </f:facet>
+                    #{requerimientoMaterial.cantidadPedida}
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Cant. A Pedir
+                    </f:facet>
+                    #{requerimientoMaterial.cantidadAPedir()}
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Cant. Reservada
+                    </f:facet>
+                    #{requerimientoMaterial.cantidadReservada}
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </composite:implementation>
+
+</html>

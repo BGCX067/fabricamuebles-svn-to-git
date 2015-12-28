@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>
+            <ui:insert name="titulo_ventana">
+                #{msgs.placesWindowTitle}
+            </ui:insert>
+        </title>
+        <h:outputStylesheet name="style.css" library="css" />
+        <!--link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/themes/primefaces-cupertino/theme.css" /-->
+        <h:outputScript name="centrado.js" library="javascript" />
+        <h:outputScript name="redondeado.js" library="javascript" />
+    </h:head>
+
+    <h:body onload="alComienzo();">
+        <div>
+            <div id="encabezado">
+                <div id="logo">
+                    <h:form>
+                        <h:commandLink action="/index?faces-redirect=true">
+                            <h:graphicImage library="images" name="logo.gif" alt="logo" width="220px" height="83px" style="border: none;"/>
+                        </h:commandLink>
+                    </h:form>
+                </div>
+                <div id="sesion">
+                    Bienvenido Cristian <a href="#">(Cerrar Sesión)</a>
+                </div>
+            </div>
+            <div id="menu" style="margin-bottom: 1em;">
+                <h:form style="width: 100% !important; max-width: 100%;">
+                    <p:menubar effect="fade" effectDuration="100" autoSubmenuDisplay="true">
+                        <p:submenu label="Sesión" >
+                            <p:menuitem value="Cerrar Sesión"/>
+                            <p:menuitem value="Cambiar Datos" />
+                        </p:submenu>
+                        <p:submenu label="Compras">
+                            <p:submenu label="Ordenes de Compra">
+                                <p:submenu label="Registrar Orden de Compra">
+                                    <p:menuitem value="Abastecimiento de una Orden de Producción Planificada" actionListener="#{reiniciador.reiniciarTodos}" action="/compras/OrdenesDeCompra/ordendeproduccion/seleccionarOrdenDeProduccionPlanificada?faces-redirect=true"/>
+                                    <p:menuitem value="Abastecimiento de Stock Mínimo" actionListener="#{reiniciador.reiniciarTodos}" action="/compras/OrdenesDeCompra/stock_minimo/seleccionarProveedor?faces-redirect=true"/>
+                                </p:submenu>
+                                <p:menuitem value="Listado de Ordenes de Compra" actionListener="#{reiniciador.reiniciarTodos}" action="/compras/OrdenesDeCompra/listado/verListado?faces-redirect=true"/>
+                            </p:submenu>
+                            <p:submenu label="Facturas">
+                                <p:menuitem value="Registrar Factura de Compra" actionListener="#{reiniciador.reiniciarTodos}" action="/compras/Facturas/remito/seleccionarProveedor?faces-redirect=true"/>
+                                <p:menuitem value="Listado de Facturas de Compra" actionListener="#{reiniciador.reiniciarTodos}" action="/compras/Facturas/listado/verListado?faces-redirect=true"/>
+                            </p:submenu>
+                            <p:submenu label="Proveedores">
+                                <p:menuitem value="Registrar Nuevo Proveedor" actionListener="#{reiniciador.reiniciarTodos}" action="/compras/Proveedores/ABM/nuevoProveedor?faces-redirect=true"/>
+                                <p:menuitem value="Listado de Proveedores" actionListener="#{reiniciador.reiniciarTodos}" action="/compras/Proveedores/Listado/verListado?faces-redirect=true"/>
+                                <p:menuitem value="Consultar Artículos de Proveedores" actionListener="#{reiniciador.reiniciarTodos}" action="/compras/Proveedores/Articulos/verListado?faces-redirect=true"/>
+                            </p:submenu>
+                        </p:submenu>
+                        <p:submenu label="Stock">
+                            <p:submenu label="Remitos de Compra">
+                                <p:menuitem value="Registrar Remito de Compra" actionListener="#{reiniciador.reiniciarTodos}" action="/stock/Remitos/ordenDeCompra/seleccionarProveedor?faces-redirect=true"/>
+                                <p:menuitem value="Listado de Remitos de Compra" actionListener="#{reiniciador.reiniciarTodos}" action="/stock/Remitos/listado/verListado?faces-redirect=true"/>
+                            </p:submenu>
+                            <p:submenu label="Remitos de Venta">
+                                <p:menuitem value="Registrar Remito de Venta" actionListener="#{reiniciador.reiniciarTodos}" action="/stock/Muebles/Facturas/Venta/verListado?faces-redirect=true"/>
+                                 <p:menuitem value="Listado de Remitos de Venta" actionListener="#{reiniciador.reiniciarTodos}" action="/stock/Remitos/listado/verListadoVenta?faces-redirect=true"/>
+                            </p:submenu>
+                            <p:submenu label="Remitos de Producción">
+                                <p:menuitem value="Registrar Remito de Abastecimiento Externo" actionListener="#{reiniciador.reiniciarTodos}" action="/stock/Remitos/ordendeproduccion/seleccionarOrdenDeProduccion?faces-redirect=true"/>
+                                <p:menuitem value="Listado de Remitos de Abastecimiento Externo" actionListener="#{reiniciador.reiniciarTodos}" action="/stock/Remitos/ordendeproduccion/verListado?faces-redirect=true"/>
+                            </p:submenu>
+                            <p:submenu label="Artículos">
+                                <p:menuitem value="Registrar Maderas" actionListener="#{reiniciador.reiniciarTodos}" action="/stock/Articulos/madera/nuevo?faces-redirect=true" />
+                                <p:menuitem value="Registrar Insumos" actionListener="#{reiniciador.reiniciarTodos}" action="/stock/Articulos/insumo/nuevo?faces-redirect=true" />
+                                <p:menuitem value="Listado de Artículos" actionListener="#{reiniciador.reiniciarTodos}" action="/stock/Articulos/listado/verListado?faces-redirect=true" />
+                                <p:menuitem value="Registrar Tipo de Madera" actionListener="#{reiniciador.reiniciarTodos}" action="/stock/Articulos/madera_tipo/nuevo?faces-redirect=true" />
+                                <p:menuitem value="Listado de Tipos de Madera" actionListener="#{reiniciador.reiniciarTodos}" action="/stock/Articulos/madera_tipo/verListado?faces-redirect=true" />
+                            </p:submenu>
+                        </p:submenu>
+                        <p:submenu label="Ventas">
+                            <p:submenu label="Clientes">
+                                <p:menuitem value="Registrar Cliente" actionListener="#{reiniciador.reiniciarTodos}" action="/ventas/Clientes/ABM/nuevoCliente?faces-redirect=true" />
+                                <p:menuitem value="Listado de Clientes" actionListener="#{reiniciador.reiniciarTodos}" action="/ventas/Clientes/Listado/verListado?faces-redirect=true" />
+                            </p:submenu>
+                            <p:submenu label="Presupuestos">
+                                <p:menuitem value="Registrar Presupuesto" actionListener="#{reiniciador.reiniciarTodos}" action="/ventas/Presupuestos/ABM/seleccionarCliente?faces-redirect=true" />
+                                <p:menuitem value="Listado de Presupuestos" actionListener="#{reiniciador.reiniciarTodos}" action="/ventas/Presupuestos/Listado/verListado?faces-redirect=true" />
+                            </p:submenu>
+                            <p:submenu label="Pedidos">
+                                <p:menuitem value="Registrar Pedido" actionListener="#{reiniciador.reiniciarTodos}" action="/ventas/Pedidos/ABM/seleccionarCliente?faces-redirect=true" />
+                                <p:menuitem value="Listado de Pedidos" actionListener="#{reiniciador.reiniciarTodos}" action="/ventas/Pedidos/Listado/verListado?faces-redirect=true" />
+                            </p:submenu>
+                            <p:submenu label="Facturas">
+                                <p:menuitem value="Registrar Factura de Venta" actionListener="#{reiniciador.reiniciarTodos}" action="/ventas/Facturas/ABM/seleccionarCliente?faces-redirect=true" />
+                                <p:menuitem value="Listado de Facturas" actionListener="#{reiniciador.reiniciarTodos}" action="/ventas/Facturas/Listado/verListado?faces-redirect=true" />
+                            </p:submenu>
+                        </p:submenu>
+                        <p:submenu label="Producción">
+                            <p:submenu label="Ordenes de Producción">
+                                <p:menuitem value="Planificar Ordenes de Producción" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/orden_produccion/planificacion?faces-redirect=true" />
+                                <p:menuitem value="Consulta de Planificaciones de Ordenes de Producción" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/orden_produccion/consultaPlanificacion?faces-redirect=true" />
+                            </p:submenu>
+                            <p:submenu label="Fabricas">
+                                <p:menuitem value="Registrar Fabrica" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/ActividadesGenericas/ABM/nuevo?faces-redirect=true" />
+                                <p:menuitem value="Listado de Fabricas" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/fabricas/Listado/verListado?faces-redirect=true" />
+                                <p:menuitem value="Asignar Tipos de Mueble a Fabrica" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/fabricas/ABM/seleccionarFabrica.xhtml?faces-redirect=true" />
+                            </p:submenu>
+                            <p:submenu label="Estructura de Productos">
+                                <p:menuitem value="Registrar Estructura de Producto" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/estructura_producto/ABM/seleccionarModeloMueble?faces-redirect=true" />
+                                <p:menuitem value="Listado de Estructuras de Producto" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/estructura_producto/Listado/verListado?faces-redirect=true" />
+                            </p:submenu>
+                            <p:submenu label="Máquinas">
+                                <p:menuitem value="Registrar Máquina" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/maquina/ABM/nuevaMaquina?faces-redirect=true" />
+                                <p:menuitem value="Listado de Máquinas" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/maquina/Listado/verListado?faces-redirect=true" />
+                                <p:menuitem value="Registrar Tipo de Máquina" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/maquina_tipo/ABM/nuevaMaquinaTipo?faces-redirect=true" />
+                                <p:menuitem value="Listado de Tipos de Máquina" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/maquina_tipo/Listado/verListado?faces-redirect=true" />
+                            </p:submenu>
+                            <p:submenu label="Herramientas">
+                                <p:menuitem value="Registrar Herramienta" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/herramienta/ABM/nuevaHerramienta?faces-redirect=true" />
+                                <p:menuitem value="Listado de Herramientas" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/herramienta/Listado/verListado?faces-redirect=true" />
+                                <p:menuitem value="Registrar Tipo de Herramienta" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/herramienta_tipo/ABM/nuevaHerramientaTipo?faces-redirect=true" />
+                                <p:menuitem value="Listado de Tipos de Herramienta" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/herramienta_tipo/Listado/verListado?faces-redirect=true" />
+                            </p:submenu>
+                            <p:submenu label="Actividades Genéricas">
+                                <p:menuitem value="Registrar Actividad Genérica" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/ActividadesGenericas/ABM/nuevo?faces-redirect=true" />
+                                <p:menuitem value="Listado de Actividades Genéricas" actionListener="#{reiniciador.reiniciarTodos}" action="/produccion/ActividadesGenericas/Listado/verListado?faces-redirect=true" />
+                            </p:submenu>
+                        </p:submenu>
+                    </p:menubar>
+                </h:form>
+            </div>
+            <div id="titulo" class="bordes-redondeados" style="margin-bottom: 1em;">
+                <div id="titulo_texto">
+                    <ui:insert name="titulo_pagina">
+
+                    </ui:insert>
+                </div>
+            </div>
+            <div id="pagina">
+                <ui:insert name="pagina">
+
+                </ui:insert>
+                <p:ajaxStatus styleClass="ajaxLoading">
+                    <f:facet name="start">
+                        <h:graphicImage library="images" name="ajaxloading.gif" />
+                    </f:facet>
+
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+            </div>
+        </div>
+    </h:body>
+</html>
+

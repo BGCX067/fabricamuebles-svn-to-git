@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="fabrica" required="true" default="null" type="entidades.Fabrica"/>
+        <composite:attribute name="editable" required="false" default="false"/>
+        <composite:attribute name="groupbox" required="false" default="true"/>
+        <composite:attribute name="mostrarRazonSocial" required="false" default="true"/>
+        <composite:attribute name="mostrarDireccion" required="false" default="true"/>
+        <composite:attribute name="mostrarTelefono" required="false" default="true"/>
+        <composite:attribute name="mostrarEmail" required="false" default="true"/>
+        <composite:attribute name="mostrarObservaciones" required="false" default="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <c:if test="#{cc.attrs.groupbox}">
+            <p:fieldset legend="Fábrica" >
+                <c:if test="#{cc.attrs.mostrarRazonSocial}">
+                    <label for="nombre">Razon Social:</label>
+                    <h:inputText id="nombre" value="#{cc.attrs.fabrica.nombre}" readonly="#{!cc.attrs.editable}" /><br/>
+                </c:if>
+                <c:if test="#{cc.attrs.mostrarDireccion}">
+                    <label>Direcciones:</label>
+                    <componentes:listadoDirecciones entidad="#{cc.attrs.fabrica}" direcciones="#{cc.attrs.fabrica.direcciones}" editable="#{cc.attrs.editable}" />
+                </c:if>
+                <c:if test="#{cc.attrs.mostrarTelefono}">
+                    <label>Teléfonos:</label>
+                    <componentes:listadoTelefonos entidad="#{cc.attrs.fabrica}" telefonos="#{cc.attrs.fabrica.telefonos}" editable="#{cc.attrs.editable}" />
+                </c:if>
+                <c:if test="#{cc.attrs.mostrarEmail}">
+                    <label for="email">E-Mail:</label>
+                    <h:inputText id="email" value="#{cc.attrs.fabrica.email}" readonly="#{!cc.attrs.editable}" /><p:message for="email"/><br/>
+                </c:if>
+                <c:if test="#{cc.attrs.mostrarObservaciones}">
+                    <label for="observaciones">Observaciones:</label>
+                    <h:inputTextarea id="observaciones" value="#{cc.attrs.fabrica.observaciones}" readonly="#{!cc.attrs.editable}" /><br/>
+                </c:if>
+            </p:fieldset>
+        </c:if>
+        <c:if test="#{!cc.attrs.groupbox}">
+            <c:if test="#{cc.attrs.mostrarRazonSocial}">
+                <label for="nombre">Razon Social:</label>
+                <h:inputText id="nombre" value="#{cc.attrs.fabrica.nombre}" readonly="#{!cc.attrs.editable}" /><br/>
+            </c:if>
+            <c:if test="#{cc.attrs.mostrarDireccion}">
+                <label for="direccion">Dirección:</label>
+                <componentes:listadoDirecciones entidad="#{cc.attrs.fabrica}" direcciones="#{cc.attrs.fabrica.direcciones}" editable="#{cc.attrs.editable}" />
+            </c:if>
+            <c:if test="#{cc.attrs.mostrarTelefono}">
+                <label>Teléfonos:</label>
+                <componentes:listadoTelefonos entidad="#{cc.attrs.fabrica}" telefonos="#{cc.attrs.fabrica.telefonos}" editable="#{cc.attrs.editable}" />
+            </c:if>
+            <c:if test="#{cc.attrs.mostrarEmail}">
+                <label for="email">E-Mail:</label>
+                <h:inputText id="email" value="#{cc.attrs.fabrica.email}" readonly="#{!cc.attrs.editable}" /><p:message for="email"/><br/>
+            </c:if>
+            <c:if test="#{cc.attrs.mostrarObservaciones}">
+                <label for="observaciones">Observaciones:</label>
+                <h:inputTextarea id="observaciones" value="#{cc.attrs.fabrica.observaciones}" readonly="#{!cc.attrs.editable}" /><br/>
+            </c:if>
+        </c:if>
+    </composite:implementation>
+
+</html>

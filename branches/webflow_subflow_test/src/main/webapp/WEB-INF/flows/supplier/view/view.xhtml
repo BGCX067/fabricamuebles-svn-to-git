@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jstl/core_rt">
+
+<ui:composition template="/WEB-INF/templates/masterLayout.xhtml">
+
+	<ui:define name="title">#{resourceBundle['supplier.admin.title']}</ui:define>
+	<ui:define name="body_title">#{resourceBundle['supplier.admin.title']}</ui:define>
+
+	<ui:define name="body">
+		<h:form id="editSupplierForm" prependId="false">
+			<p:panelGrid width="60%" styleClass="no-border-panelgrid">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{resourceBundle['person.firstName']}:" for="name_first"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:inputText value="#{supplierModel.firstName}" id="name_first"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="name_first" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{resourceBundle['person.lastName']}:" for="name_last"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:inputText value="#{supplierModel.lastName}" id="name_last"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="name_last" />
+                    </p:column>
+                </p:row>
+                <p:row id="identity">
+                    <p:column>
+                        <p:outputLabel value="#{resourceBundle['person.identity']}:" for="identityType"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="identityType" value="#{supplierModel.identityType}">
+                            <f:selectItems value="#{supplierModel.identityTypes}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="identityNumber" value="#{supplierModel.identityNumber}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="identity"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{resourceBundle['person.admin.phoneNumber']}:" for="phoneNumber"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:inputText id="phoneNumber" value="#{supplierModel.phoneNumber}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="phoneNumber"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{resourceBundle['person.admin.email']}:" for="email"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:inputText id="email" value="#{supplierModel.email}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="email"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{resourceBundle['address.admin.state']}:" for="state"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="state" value="#{supplierModel.state}" converter="#{supplierController}">
+                            <f:selectItems value="#{supplierModel.states}" var="state" itemLabel="#{state.name}"/>
+                            <f:ajax execute="@this" render="editState editCity address_city" listener="#{supplierController.updateStateCities()}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:commandLink id="editState" action="editState" title="#{resourceBundle['edit']}" oncomplete="stateDialog.show()"
+                                       process="@form" update=":stateForm" disabled="#{supplierModel.state == null}">
+                            <h:graphicImage value="/resources/images/edit.gif" />
+                        </p:commandLink>
+                        <p:commandLink action="newState" title="#{resourceBundle['new']}" oncomplete="stateDialog.show()"
+                                       process="@form" update=":stateForm">
+                            <h:graphicImage value="/resources/images/add.gif" />
+                        </p:commandLink>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{resourceBundle['address.admin.city']}:" for="address_city"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="address_city" value="#{supplierModel.city}" converter="#{supplierController}">
+                            <f:selectItems value="#{supplierModel.cities}" var="city" itemLabel="#{city.name}"/>
+                            <f:ajax execute="@this" render="editCity"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <p:commandLink id="editCity" action="editCity" title="#{resourceBundle['edit']}" oncomplete="cityDialog.show()"
+                                       process="@form" update=":cityForm" disabled="#{supplierModel.city == null}">
+                            <h:graphicImage value="/resources/images/edit.gif" />
+                        </p:commandLink>
+                        <p:commandLink action="newCity" title="#{resourceBundle['new']}" oncomplete="cityDialog.show()"
+                                       process="@form" update=":cityForm">
+                            <h:graphicImage value="/resources/images/add.gif" />
+                        </p:commandLink>
+                    </p:column>
+                    <p:column>
+                        <p:message for="address_city" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{resourceBundle['address.admin.street']}:" for="address_street"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:inputText id="address_street" value="#{supplierModel.street}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="address_street" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{resourceBundle['address.admin.number']}:" for="address_number"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:inputText id="address_number" value="#{supplierModel.number}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="address_number" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{resourceBundle['address.admin.floor']}:" for="address_floor"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:inputText id="address_floor" value="#{supplierModel.floor}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="address_floor" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{resourceBundle['address.admin.apartment']}:" for="address_apartment"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:inputText id="address_apartment" value="#{supplierModel.apartment}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="address_apartment" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:messages globalOnly="true"/>
+			<br />
+			<br />
+			<p:commandButton value="#{resourceBundle['accept']}" update="@form"
+				action="confirm"/>
+
+			<p:commandButton value="#{resourceBundle['cancel']}"
+				action="cancel" immediate="true"/>
+		</h:form>
+        <p:dialog widgetVar="cityDialog">
+            <h:form id="cityForm">
+            </h:form>
+        </p:dialog>
+        <p:dialog widgetVar="stateDialog">
+            <h:form id="stateForm">
+            </h:form>
+        </p:dialog>
+	</ui:define>
+</ui:composition>
+</html>

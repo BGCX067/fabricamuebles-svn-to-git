@@ -1,0 +1,78 @@
+<h:form id="searchSupplierForm"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:f="http://java.sun.com/jsf/core">
+    <div class="search-section">
+        <p:panelGrid columns="4" styleClass="no-border-panelgrid" style="float: left">
+            <p:outputLabel value="#{resourceBundle['person.firstName']}:" for="first"/>
+            <p:inputText id="first" value="#{supplierModel.filter.firstName}"/>
+            <p:outputLabel value="#{resourceBundle['person.lastName']}:" for="last"/>
+            <p:inputText id="last" value="#{supplierModel.filter.lastName}"/>
+            <p:outputLabel value="#{resourceBundle['person.identityType']}:" for="identityType"/>
+            <p:selectOneMenu id="identityType" value="#{supplierModel.filter.identityType}">
+                <f:selectItem itemValue="#{null}" itemLabel="#{resourceBundle['all']}"/>
+                <f:selectItems value="#{supplierModel.identityTypes}"/>
+            </p:selectOneMenu>
+            <p:outputLabel value="#{resourceBundle['person.identityNumber']}:" for="identityNumber"/>
+            <p:inputText id="identityNumber" value="#{supplierModel.filter.identityNumber}"/>
+        </p:panelGrid>
+        <p:commandButton value="#{resourceBundle['search']}" action="search"
+                         update="supplierListTable"
+                         styleClass="search-button"/>
+    </div>
+    <p:commandButton value="#{resourceBundle['new']}" action="new" styleClass="new-button"/>
+
+    <p:dataTable id="supplierListTable" var="supplier" value="#{supplierModel.list}"
+                 paginator="true"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 rowsPerPageTemplate="5,10,15"
+                 emptyMessage="#{resourceBundle['search.message.dataNotFound']}"
+                 paginatorAlwaysVisible="false">
+
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="#{resourceBundle['name']}" />
+            </f:facet>
+            <h:outputText value="#{supplier.name.sortName}" />
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="#{resourceBundle['person.search.phone']}" />
+            </f:facet>
+            <h:outputText value="#{supplier.phoneNumber}" />
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="#{resourceBundle['person.search.address']}" />
+            </f:facet>
+            <h:outputText value="#{supplier.address}" />
+        </p:column>
+        <p:column>
+            <p:commandLink action="edit" title="#{resourceBundle['edit']}">
+                <h:graphicImage value="/resources/images/edit.gif" />
+                <f:setPropertyActionListener target="#{supplierModel.editedEntity}"
+                                             value="#{supplier}" />
+            </p:commandLink>
+            <p:commandLink process="@this" update="@none"
+                           oncomplete="confirmation.show()"
+                           title="#{resourceBundle['delete']}">
+                <h:graphicImage value="/resources/images/delete.gif" />
+                <f:setPropertyActionListener target="#{supplierModel.editedEntity}"
+                                             value="#{supplier}" />
+            </p:commandLink>
+        </p:column>
+    </p:dataTable>
+	<p:messages globalOnly="true"/>
+
+    <p:confirmDialog id="confirmDialog"
+                     message="#{resourceBundle['supplier.delete.confirm']}"
+                     header="#{resourceBundle['confirm']}" severity="alert"
+                     widgetVar="confirmation">
+
+        <p:commandButton id="confirm" value="#{resourceBundle['delete']}"
+                         oncomplete="confirmation.hide()" action="delete"
+                         update="supplierListTable" />
+        <p:commandButton id="decline" value="#{resourceBundle['cancel']}"
+                         onclick="confirmation.hide()" type="button" />
+    </p:confirmDialog>
+</h:form>

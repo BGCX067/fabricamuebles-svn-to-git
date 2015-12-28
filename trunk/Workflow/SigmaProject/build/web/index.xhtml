@@ -1,0 +1,15 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="titulo_ventana">Menu Principal</ui:define>
+    <ui:define name="titulo_pagina">Menu Principal</ui:define>
+    <ui:define name="pagina">
+        #{reiniciador.reiniciarTodos(null)}
+    </ui:define>
+</ui:composition>
+
+

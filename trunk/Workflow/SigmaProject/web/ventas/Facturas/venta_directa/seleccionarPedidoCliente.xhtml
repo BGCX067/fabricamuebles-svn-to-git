@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Listado de Pedidos</ui:define>
+    <ui:define name="titulo_pagina">Listado de Pedidos</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false" id="listado">
+            <p>Por favor seleccione un Pedido:</p>
+            <componentes:listadoPedidosCristian seleccionNavegable="true" cliente="#{vistaCliente.clienteSeleccionado}" filtrarPorCliente="true" objetoSeleccion="#{vistaPedido.pedidoSeleccionado}"/>
+            <h:outputText value="#{vistaFactura.error}" styleClass="error" />
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" action="mostrarDatosCliente?faces-redirect=true"/>
+                <p:commandButton value="Siguiente" action="#{vistaFactura.abrirFacturaAPartirDePedido(vistaPedido.pedidoSeleccionado)}" update="@none" onsuccess="location='seleccionarDetallesPedido.xhtml'" />
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

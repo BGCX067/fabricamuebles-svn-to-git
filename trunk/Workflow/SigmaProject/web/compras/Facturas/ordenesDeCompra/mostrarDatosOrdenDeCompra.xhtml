@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Registrar Factura de Orden de Compra</ui:define>
+    <ui:define name="titulo_pagina">Datos de la Orden de Compra</ui:define>
+    <ui:define name="pagina">
+        <p>A continuación, se muestran los datos de la orden de compra seleccionada.<br/></p>
+        <h:form prependId="false">
+            <componentes:datosOrdenDeCompra ordenDeCompra="#{generico.ordenDeCompraSeleccionada}" editable="false"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Modificar" action="#{vistaFactura.modificarFacturaAPartirDeOrdenDeCompra(generico.ordenDeCompraSeleccionada)}"/>
+                <p:commandButton ajax="false" value="Registrar Factura" action="#{vistaFactura.confirmarFacturaAPartirDeOrdenDeCompra(generico.ordenDeCompraSeleccionada)}"/>
+                <p:commandButton ajax="false" value="Volver" action="verListado?faces-redirect=true"/>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+

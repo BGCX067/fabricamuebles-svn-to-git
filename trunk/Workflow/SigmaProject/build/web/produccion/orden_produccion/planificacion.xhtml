@@ -1,0 +1,255 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="titulo_ventana">Planificar Ordenes de Producción</ui:define>
+    <ui:define name="titulo_pagina">Planificar Ordenes de Producción</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false" id="listado" style="width: 950px;">
+            <h:panelGroup id="panelTablaPMP">
+                <p:treeTable var="fila" value="#{vistaPMP.treeNodePorTipoYModeloYDetallePedido}">
+                    <p:column>
+                        <f:facet name="header">
+                            Mueble
+                        </f:facet>
+                        <h:outputText value="#{fila.nombre}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Cantidad Por Asignar
+                        </f:facet>
+                        <h:outputText value="#{fila.cantidadPorAsignar}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Fecha Pedido
+                        </f:facet>
+                        <h:outputText value="#{fila.fechaPedido}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Cliente
+                        </f:facet>
+                        <h:outputText value="#{fila.cliente}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Marcar para Asignar
+                        </f:facet>
+                        <p:commandLink ajax="#{fila.contenidoParametrosColumnaMarcado.ajax}" process="@this" action="#{fila.contenidoParametrosColumnaMarcado.getAction()}" update="#{fila.contenidoParametrosColumnaMarcado.update}" title="#{fila.contenidoParametrosColumnaMarcado.title}" >
+                            <h:graphicImage library="images" name="#{fila.contenidoParametrosColumnaMarcado.graphicImageName}" style="border-style: none;" height="24px" width="24px"/>
+                            <f:setPropertyActionListener value="#{fila}" target="#{fila.contenidoParametrosColumnaMarcado.propertyActionListenerTarget}" />
+                        </p:commandLink>
+                    </p:column>
+                </p:treeTable><br/>
+                <h:outputText id="itemMarcado" value="Item marcado: #{vistaPMP.detalleArbolSeleccionado}" />
+            </h:panelGroup><br/><br/>
+            <p:messages/>
+            <h:panelGroup id="panelTablaFabrica">
+                <p:dataTable var="fila" value="#{vistaFabrica.devolverFabricas()}" selectionMode="single" selection="#{vistaPMP.fabricaSeleccionada}" onRowSelectUpdate="fabricaSeleccionada panelTablaOP botonesAbajo" emptyMessage="No hay registros cargados">
+                    <p:column>
+                        <f:facet name="header">
+                            Fábrica
+                        </f:facet>
+                        <h:outputText value="#{fila.nombre}" />
+                    </p:column>
+                </p:dataTable><br/>
+                <h:outputText id="fabricaSeleccionada" value="Fábrica Seleccionada: #{vistaPMP.fabricaSeleccionada.nombre}" />
+            </h:panelGroup><br/><br/>
+            <h:panelGroup id="panelTablaOP">
+                <p:dataTable var="fila" value="#{vistaOrdenDeProduccion.devolverOrdenesDeProduccionPlanificadas(vistaPMP.fabricaSeleccionada)}" selectionMode="single" selection="#{vistaPMP.ordenDeProduccionSeleccionada}" onRowSelectUpdate="panelTablaOP botonesAbajo" emptyMessage="No hay registros cargados">
+                    <p:column>
+                        <f:facet name="header">
+                            Fecha Estimada<br/>Inicio
+                        </f:facet>
+                        <h:outputText value="#{fila.fechaInicioEstimada}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" type="date"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Fecha Estimada<br/>Fin
+                        </f:facet>
+                        <h:outputText value="#{fila.fechaFinEstimada}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" type="date"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Tipo
+                        </f:facet>
+                        <h:outputText value="#{fila.muebleTipo.nombre}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Capacidad<br/>Máxima
+                        </f:facet>
+                        <h:outputText value="#{fila.fabrica.devolverCapacidadMaximaPara(fila.muebleTipo)}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Capacidad<br/>Disponible
+                        </f:facet>
+                        <h:outputText value="#{fila.devolverCapacidadDisponible()}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Acción
+                        </f:facet>
+                        <p:commandButton value="Ver Requerimientos Materiales" process="@this" update="panelDialogoRequerimientosMateriales" onsuccess="dialogoRequerimientosMateriales.show();" >
+                            <f:setPropertyActionListener target="#{vistaPMP.requerimientoMateriales}" value="#{fila.requerimientoMateriales}" />
+                        </p:commandButton>
+                        <p:commandButton value="Editar" action="#{vistaPMP.calcularLimitesFechasOrdenDeProduccion(fila)}" process="@this" update="panelDialogoEditarFechasEstimadasOP" onsuccess="dialogoEditarFechasEstimadasOP.show();"/>
+                        <p:commandButton value="Quitar" action="#{vistaPMP.quitarOrdenDeProduccion(fila)}" process="@this" update="panelTablaOP"/>
+                    </p:column>
+                </p:dataTable><br/>
+                <h:outputText id="ordenDeProduccionSeleccionada" value="Orden de Producción Seleccionada: #{vistaPMP.ordenDeProduccionSeleccionada.descripcion}" />
+            </h:panelGroup><br/><br/>
+            <h:panelGroup id="panelScript">
+                <script type="text/javascript">
+                    <h:outputText value="#{vistaPMP.script}" escape="false"/>
+                </script>
+            </h:panelGroup>
+            <h:panelGroup styleClass="botonesBottom" id="botonesAbajo">
+                <p:commandButton value="Crear Orden de Producción y Asignar" binding="#{vistaPMP.botonCrearOP}" action="#{vistaPMP.validarYCalcularFechasNuevaOrdenDeProduccion}" process="@this" update="panelDialogoFechasEstimadasNuevaOP panelScript"/>
+                <p:commandButton value="Asignar a la Orden de Producción Seleccionada" binding="#{vistaPMP.botonAsignarOP}" action="#{vistaPMP.setearFechaInicioLimiteParaAsignacion}" process="@this" update="panelDialogoFechasEstimadasAsignacionOP panelScript"/>
+                <p:commandButton ajax="false" value="Volver" action="/index?faces-redirect=true"/>
+            </h:panelGroup>
+        </h:form>
+        <p:dialog widgetVar="dialogoFechasEstimadasNuevaOP" width="550" resizable="false" modal="true">
+            <h:form prependId="false" style="min-width: 520px; width: 520px;">
+                <h:panelGroup id="panelDialogoFechasEstimadasNuevaOP">
+                    <p>Se ha calculado la fecha de inicio estimada más próxima posible, en base a disponibilidad de la fábrica,
+                        y en base a los tiempos para pedidos.<br/>
+                        La fecha fin estimada se ha calculado en base a la estructura de actividades definida para el/los
+                        modelos de muebles especificados.</p>
+                    <h:outputLabel style="width: 180px;" for="fechaInicioEstimada">Fecha Inicio Estimada:</h:outputLabel>
+                    <p:calendar id="fechaInicioEstimada" locale="es" value="#{vistaPMP.fechaInicioEstimadaNuevaOrdenDeProduccion}" mindate="#{vistaPMP.fechaMinimaCalendarioNuevaOP}" pattern="dd/MM/yyyy"/><br/>
+                    <h:outputLabel style="width: 180px;" for="fechaFinEstimada">Fecha Fin Estimada:</h:outputLabel>
+                    <p:calendar id="fechaFinEstimada" locale="es" value="#{vistaPMP.fechaFinEstimadaNuevaOrdenDeProduccion}" mindate="#{vistaPMP.fechaMinimaCalendarioNuevaOP}" pattern="dd/MM/yyyy"/>
+                    <p:messages/>
+                    <h:panelGroup styleClass="botonesBottom">
+                        <p:commandButton value="Ver Requerimientos Materiales" process="@this" update="panelDialogoRequerimientosMaterialesPrevia" onsuccess="dialogoRequerimientosMaterialesPrevia.show();" />
+                        <p:commandButton value="Crear Orden de Producción y Asignar" action="#{vistaPMP.crearYAsignarAOrdenDeProduccion}" process="panelDialogoFechasEstimadasNuevaOP" update="panelTablaPMP panelTablaFabrica panelTablaOP " onsuccess="dialogoFechasEstimadasNuevaOP.hide();"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+        <p:dialog widgetVar="dialogoFechasEstimadasAsignacionOP" width="400" resizable="false" modal="true">
+            <h:form prependId="false" style="min-width: 200px; width: 380px;">
+                <h:panelGroup id="panelDialogoFechasEstimadasAsignacionOP">
+                    <p>A continuación, puede modificar la fecha de fin estimada de la Orden de Producción seleccionada.<br/>
+                        Si hay Ordenes de Producción posteriores, estas serán corridas hacia adelante.</p>
+                    <h:outputLabel style="width: 180px;" for="fechaInicioEstimada2">Fecha Inicio Estimada:</h:outputLabel>
+                    <p:calendar id="fechaInicioEstimada2" locale="es" value="#{vistaPMP.fechaInicioEstimadaAsignacionOrdenDeProduccion}" pattern="dd/MM/yyyy" disabled="true"/>
+                    <h:outputLabel style="width: 180px;" for="fechaFinEstimada2">Fecha Fin Estimada:</h:outputLabel>
+                    <p:calendar id="fechaFinEstimada2" locale="es" value="#{vistaPMP.fechaFinEstimadaAsignacionOrdenDeProduccion}" mindate="#{vistaPMP.fechaMinimaCalendarioAsignacionOP}" pattern="dd/MM/yyyy"/>
+                    <p:messages/>
+                    <h:panelGroup styleClass="botonesBottom">
+                        <p:commandButton value="Ver Requerimientos Materiales" process="@this" update="panelDialogoRequerimientosMaterialesPrevia" onsuccess="dialogoRequerimientosMaterialesPrevia.show();" />
+                        <p:commandButton value="Asignar" action="#{vistaPMP.asignarAOrdenDeProduccion}" process="panelDialogoFechasEstimadasAsignacionOP" update="panelTablaPMP panelTablaFabrica panelTablaOP " onsuccess="dialogoFechasEstimadasAsignacionOP.hide();"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+        <p:dialog widgetVar="dialogoEditarFechasEstimadasOP" width="400" resizable="false" modal="true">
+            <h:form prependId="false" style="min-width: 200px; width: 380px;" id="formDialogoEditarFechasEstimadasOP">
+                <h:panelGroup id="panelDialogoEditarFechasEstimadasOP">
+                    <p>A continuación, puede editar las fechas estimadas de la Orden de Producción seleccionada.<br/>
+                        Se establece como límite de fecha estimada de inicio el día después de la Orden de Producción anterior, si existiese, o la fecha mínima
+                        que permitiese realizar todos los pedidos necesarios, lo que viniese después. Puede elegir si arrastrar las Ordenes de Producción posteriores
+                        a esta con respecto al cambio de la fecha estimada de fin.</p>
+                    <h:outputLabel style="width: 180px;" for="fechaInicioEstimada3">Fecha Inicio Estimada:</h:outputLabel>
+                    <p:calendar id="fechaInicioEstimada3" locale="es" value="#{vistaPMP.fechaInicioEstimadaOrdenDeProduccion}" mindate="#{vistaPMP.fechaMinimaOrdenDeProduccionAEditar}" maxdate="#{vistaPMP.fechaMaximaOrdenDeProduccionAEditar}" pattern="dd/MM/yyyy"/>
+                    <h:outputLabel style="width: 180px;" for="fechaFinEstimada3">Fecha Fin Estimada:</h:outputLabel>
+                    <p:calendar id="fechaFinEstimada3" locale="es" value="#{vistaPMP.fechaFinEstimadaOrdenDeProduccion}" mindate="#{vistaPMP.fechaMinimaOrdenDeProduccionAEditar}" maxdate="#{vistaPMP.fechaMaximaOrdenDeProduccionAEditar}" pattern="dd/MM/yyyy"/><br/>
+                    <h:outputLabel for="arrastrar">Arrastrar Ordenes de Producción siguientes</h:outputLabel>
+                    <h:selectBooleanCheckbox id="arrastrar" value="#{vistaPMP.arrastrarOrdenesDeProduccionSiguientes}">
+                        <p:ajax event="click" update="panelDialogoEditarFechasEstimadasOP" process="panelDialogoEditarFechasEstimadasOP"
+                                onstart="document.getElementById('textoProcesando').style.visibility = 'visible'; document.formDialogoEditarFechasEstimadasOP.fechaInicioEstimada3_input.disabled = true; document.formDialogoEditarFechasEstimadasOP.fechaFinEstimada3_input.disabled = true"
+                                oncomplete="document.getElementById('textoProcesando').style.visibility = 'hidden'; document.formDialogoEditarFechasEstimadasOP.fechaInicioEstimada3_input.disabled = false; document.formDialogoEditarFechasEstimadasOP.fechaFinEstimada3_input.disabled = false"/>
+                    </h:selectBooleanCheckbox>
+                    <h:outputText value="Procesando..." id="textoProcesando" style="visibility: hidden; color: #cd0a0a; margin-left: 10px;"/>
+                    <h:panelGroup styleClass="botonesBottom">
+                        <p:commandButton value="Guardar" action="#{vistaPMP.editarOrdenDeProduccion}" process="panelDialogoEditarFechasEstimadasOP" update="panelTablaPMP panelTablaFabrica panelTablaOP " onsuccess="dialogoEditarFechasEstimadasOP.hide();"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+        <p:dialog widgetVar="dialogoRequerimientosMaterialesPrevia" width="650" resizable="false" modal="true">
+            <h:form prependId="false" style="min-width: 600px; width: 600px;">
+                <h:panelGroup id="panelDialogoRequerimientosMaterialesPrevia">
+                    <p:dataTable var="fila" value="#{vistaPMP.requerimientoMateriales}">
+                        <p:column>
+                            <f:facet name="header">
+                                Artículo
+                            </f:facet>
+                            <h:outputText value="#{fila.itemRequerible.nombre}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Cantidad Total
+                            </f:facet>
+                            <h:outputText value="#{fila.cantidadRequerida}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Cantidad A Pedir
+                            </f:facet>
+                            <h:outputText value="#{fila.cantidadAPedir()}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Cantidad Disponible<br/>para Reservar
+                            </f:facet>
+                            <h:outputText value="#{fila.cantidadReservada}" />
+                        </p:column>
+                    </p:dataTable>
+                    <h:panelGroup styleClass="botonesBottom">
+                        <p:commandButton value="Cerrar" onclick="dialogoRequerimientosMaterialesPrevia.hide();" />
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+        <p:dialog widgetVar="dialogoRequerimientosMateriales" width="650" resizable="false" modal="true">
+            <h:form prependId="false" style="min-width: 600px; width: 600px;">
+                <h:panelGroup id="panelDialogoRequerimientosMateriales">
+                    <p:dataTable var="fila" value="#{vistaPMP.requerimientoMateriales}">
+                        <p:column>
+                            <f:facet name="header">
+                                Artículo
+                            </f:facet>
+                            <h:outputText value="#{fila.itemRequerible.nombre}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Cantidad Total
+                            </f:facet>
+                            <h:outputText value="#{fila.cantidadRequerida}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Cantidad A Pedir
+                            </f:facet>
+                            <h:outputText value="#{fila.cantidadAPedir()}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Cantidad Reservada<br/>
+                            </f:facet>
+                            <h:outputText value="#{fila.cantidadReservada}" />
+                        </p:column>
+                    </p:dataTable>
+                    <h:panelGroup styleClass="botonesBottom">
+                        <p:commandButton value="Cerrar" onclick="dialogoRequerimientosMateriales.hide();" />
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="editable" required="false" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <p:dialog widgetVar="dialogoDireccion" id="dialogoDireccion" width="520" modal="true" resizable="false" closeOnEscape="true" closeListener="#{vistaDireccion.cierreDialogo}">
+            <h:form prependId="false" style="min-width: 500px;; width: 500px;">
+                <p:outputPanel id="panelDireccion" binding="#{vistaNombreComponente.panelDireccion}">
+                    <componentes:datosDirecciones direccion="#{vistaDireccion.direccionSeleccionada}" editable="#{cc.attrs.editable}"/>
+                    <div class="botonesBottom">
+                        <p:commandButton value="Volver" onclick="dialogoDireccion.hide(); return false;" />
+                        <c:if test="#{cc.attrs.editable == true}">
+                            <p:commandButton value="#{vistaDireccion.valueAgregarOActualizar}" action="#{vistaDireccion.guardarDatos()}" process="#{vistaNombreComponente.panelDireccion.clientId}" update="#{vistaNombreComponente.listadoDirecciones.clientId} mensajesDireccion" onsuccess="dialogoDireccion.hide();"/><br/>
+                            <p:messages id="mensajesDireccion"/>
+                        </c:if>
+                    </div>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+    </composite:implementation>
+</html>

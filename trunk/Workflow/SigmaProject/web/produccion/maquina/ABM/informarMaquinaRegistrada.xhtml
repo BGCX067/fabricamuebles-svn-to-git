@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Registrar Máquina</ui:define>
+    <ui:define name="titulo_pagina">Registrar Máquina</ui:define>
+    <ui:define name="pagina">
+        <h:form>
+            <h:outputText value="La máquina ha sido registrada con éxito."/><br/>
+            <h:outputText value="Haga click " />
+            <h:commandLink value="aquí" action="/index?faces-redirect=true" />
+            <h:outputText value=" para proceder al Menú Principal."/>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:componentes="http://java.sun.com/jsf/composite/componentes"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="pedido" required="true" default="null" type="entidades.Pedido"/>
+        <composite:attribute name="editable" required="false" default="false"/>
+        <composite:attribute name="mostrarEstado" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <p:fieldset legend="Pedido">
+            <label for="nombre">Número:</label>
+            <h:inputText id="numero" value="#{cc.attrs.pedido.numero}" readonly="true" /><br/>
+            <componentes:datosClientes cliente="#{cc.attrs.pedido.entidad}" editable="false" groupbox="false"
+                                       mostrarDireccion="false" mostrarEmail="false" mostrarObservaciones="false" mostrarCuit="false"
+                                       mostrarTelefono="false"/>
+            <label for="fecha">Fecha:</label>
+            <p:calendar pattern="dd/MM/yyyy" locale="es" disabled="#{!cc.attrs.editable}" mode="popup" id="fecha" value="#{cc.attrs.pedido.fechaCreacion}"/><br/>
+            <c:if test="#{cc.attrs.mostrarEstado == true}">
+                <label for="estado">Estado:</label>
+                <h:inputText id="estado" value="#{cc.attrs.pedido.estado}" readonly="true" /><br/>
+            </c:if>
+            <c:if test="#{cc.attrs.mostrarFechaRealEntrega == true}">
+                <label for="fechaEntregaReal">Fecha Entrega Real:</label>
+                <p:calendar pattern="dd/MM/yyyy" locale="es" disabled="#{!cc.attrs.editable}" mode="popup" id="fechaEntregaReal" value="#{cc.attrs.pedido.fechaEntregaReal}"/><br/>
+            </c:if>
+        </p:fieldset>
+        <br/>
+        <p:dataTable
+            var="fila"
+            value="#{cc.attrs.pedido.detalles}"
+            >
+            <p:column>
+                <f:facet name="header">
+                    Nombre
+                </f:facet>
+                #{fila.muebleModelo.nombre}
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    Importe Unitario
+                </f:facet>
+                <h:outputText value="#{fila.precioUnitario}">
+                    <f:convertNumber type="currency" currencySymbol="$" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    Cantidad
+                </f:facet>
+                #{fila.cantidad}
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    Subtotal
+                </f:facet>
+                <h:outputText style="text-align: right;" value="#{fila.calcularSubTotal()}">
+                    <f:convertNumber type="currency" currencySymbol="$" />
+                </h:outputText>
+            </p:column>
+        </p:dataTable><br/>
+        Total: <h:outputText value="#{cc.attrs.pedido.importeTotal}">
+            <f:convertNumber type="currency" currencySymbol="$" />
+        </h:outputText>
+    </composite:implementation>
+
+</html>

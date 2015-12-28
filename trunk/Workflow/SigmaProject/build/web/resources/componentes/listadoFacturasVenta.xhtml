@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="seleccion" required="false" default="false"/>
+        <composite:attribute name="objetoSeleccion" required="false" default="null" type="entidades.Factura"/>
+        <composite:attribute name="seleccionNavegable" required="false" default="false"/>
+        <composite:attribute name="seleccionNoEntregada" required="false" default="false"/>
+        <composite:attribute name="paginaSiguiente" />
+    </composite:interface>
+
+    <composite:implementation>
+        <c:if test="#{cc.attrs.seleccion}">
+            <p:dataTable var="fila" value="#{vistaFactura.devolverFacturasVenta()}" selection="#{cc.attrs.objetoSeleccion}" paginator="true" rows="10" selectionMode="single"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos"
+                         loadingMessage="Cargando...">
+                <p:column sortBy="#{fila.numero}" filterBy="#{fila.numero}" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Número" />
+                    </f:facet>
+                    #{fila.numero}
+                </p:column>
+                <p:column sortBy="#{fila.fechaCreacion}" filterBy="#{fila.fechaCreacion}" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Fecha de Creación" />
+                    </f:facet>
+                    <h:outputText value="#{fila.fechaCreacion}" >
+                        <f:convertDateTime type="date" />
+                    </h:outputText>
+                </p:column>
+                <p:column sortBy="#{fila.entidad.nombre}" filterBy="#{fila.entidad.nombre}" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Cliente" />
+                    </f:facet>
+                    <h:outputText value="#{fila.entidad.nombre}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Importe" />
+                    </f:facet>
+                    <h:outputText value="#{fila.importeTotal}" >
+                        <f:convertNumber type="currency" currencySymbol="$" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </c:if>
+        <c:if test="#{cc.attrs.seleccionNavegable}">
+            <c:if test="#{cc.attrs.seleccionNoEntregada == true}">
+            <p:dataTable var="fila"
+                         value="#{vistaFactura.devolverFacturasVentaNoEntregada()}"
+                         onRowSelectUpdate="@none"
+                         onRowSelectComplete="location='#{cc.attrs.paginaSiguiente}'"
+                         selection="#{cc.attrs.objetoSeleccion}"
+                         paginator="true"
+                         rows="10"
+                         selectionMode="single"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos"
+                         loadingMessage="Cargando...">
+                <p:column sortBy="#{fila.numero}" filterBy="#{fila.numero}" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Número" />
+                    </f:facet>
+                    #{fila.numero}
+                </p:column>
+                <p:column sortBy="#{fila.fechaCreacion}" filterBy="#{fila.fechaCreacion}" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Fecha de Creación" />
+                    </f:facet>
+                    <h:outputText value="#{fila.fechaCreacion}" >
+                        <f:convertDateTime type="date" />
+                    </h:outputText>
+                </p:column>
+                <p:column sortBy="#{fila.entidad.nombre}" filterBy="#{fila.entidad.nombre}" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Cliente" />
+                    </f:facet>
+                    <h:outputText value="#{fila.entidad.nombre}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Importe" />
+                    </f:facet>
+                    <h:outputText value="#{fila.importeTotal}" >
+                        <f:convertNumber type="currency" currencySymbol="$" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+            </c:if>
+            <c:if test="#{cc.attrs.seleccionNoEntregada == false}">
+            <p:dataTable var="fila"
+                         value="#{vistaFactura.devolverFacturasVenta()}"
+                         onRowSelectUpdate="@none"
+                         onRowSelectComplete="location='#{cc.attrs.paginaSiguiente}'"
+                         selection="#{cc.attrs.objetoSeleccion}"
+                         paginator="true"
+                         rows="10"
+                         selectionMode="single"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos"
+                         loadingMessage="Cargando...">
+                <p:column sortBy="#{fila.numero}" filterBy="#{fila.numero}" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Número" />
+                    </f:facet>
+                    #{fila.numero}
+                </p:column>
+                <p:column sortBy="#{fila.fechaCreacion}" filterBy="#{fila.fechaCreacion}" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Fecha de Creación" />
+                    </f:facet>
+                    <h:outputText value="#{fila.fechaCreacion}" >
+                        <f:convertDateTime type="date" />
+                    </h:outputText>
+                </p:column>
+                <p:column sortBy="#{fila.entidad.nombre}" filterBy="#{fila.entidad.nombre}" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Cliente" />
+                    </f:facet>
+                    <h:outputText value="#{fila.entidad.nombre}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Importe" />
+                    </f:facet>
+                    <h:outputText value="#{fila.importeTotal}" >
+                        <f:convertNumber type="currency" currencySymbol="$" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+            </c:if>
+        </c:if>
+    </composite:implementation>
+
+</html>

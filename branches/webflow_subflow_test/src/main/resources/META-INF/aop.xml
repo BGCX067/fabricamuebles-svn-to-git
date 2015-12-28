@@ -1,0 +1,21 @@
+<!DOCTYPE aspectj PUBLIC
+		"-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+
+	<weaver>
+
+		<include within="org.springframework.webflow.engine.impl.*"/>
+
+		<!-- weave aspects so aspectOf and other needed methods get injected -->
+		<include within="ar.edu.utn.sigmaproject.webflow.aspects.*"/>
+
+	</weaver>
+
+	<aspects>
+
+		<!-- weave in just this aspect -->
+		<aspect name="ar.edu.utn.sigmaproject.webflow.aspects.FlashScopeInSessionScopeAspect"/>
+
+	</aspects>
+
+</aspectj>

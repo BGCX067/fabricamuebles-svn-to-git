@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+      parent="transitions">
+    <attribute name="needsNewSession" value="true"/>
+    <persistence-context/>
+    <input name="uid"/>
+    <input name="useCaseMode" type="ar.edu.utn.sigmaproject.controller.UseCaseMode" required="true"/>
+    <on-start>
+        <evaluate expression="supplierController.prepareEntityRender(uid,useCaseMode)"/>
+    </on-start>
+    <view-state id="view">
+        <on-entry>
+            <evaluate expression="supplierController.populateNonEntityPropertiesToModel()"/>
+        </on-entry>
+        <transition on="confirm" to="confirm">
+            <evaluate expression="supplierController.confirmSave(messageContext, externalContext.locale)"/>
+        </transition>
+        <transition on="cancel" to="cancel"/>
+        <transition on="newState" to="state">
+            <set name="flashScope.uid" value="''"/>
+        </transition>
+        <transition on="editState" to="state">
+            <evaluate expression="supplierController.prepareEditState()"/>
+            <set name="flashScope.uid" value="supplierModel.state.uid"/>
+        </transition>
+        <transition on="newCity" to="city">
+            <set name="flashScope.uid" value="''"/>
+            <set name="flashScope.stateUid" value="supplierModel.state.uid"/>
+        </transition>
+        <transition on="editCity" to="city">
+            <evaluate expression="supplierController.prepareEditCity()"/>
+            <set name="flashScope.uid" value="supplierModel.city.uid"/>
+            <set name="flashScope.stateUid" value="supplierModel.state.uid"/>
+        </transition>
+    </view-state>
+    <end-state id="confirm" commit="true">
+        <output name="resultUid" value="supplierModel.editedEntity.uid" type="java.lang.String"/>
+    </end-state>
+    <end-state id="cancel"/>
+    <subflow-state id="city" subflow="city">
+        <input name="uid" value="uid"/>
+        <input name="stateUid" value="stateUid"/>
+        <input name="mode" value="'embedded'"/>
+        <output name="resultUid"/>
+        <transition on="confirm" to="view">
+            <evaluate expression="supplierController.setCityWithUid(resultUid)"/>
+        </transition>
+        <transition on="cancel" to="view"/>
+    </subflow-state>
+    <subflow-state id="state" subflow="state">
+        <input name="uid" value="uid"/>
+        <input name="mode" value="'embedded'"/>
+        <output name="resultUid"/>
+        <transition on="confirm" to="view">
+            <evaluate expression="supplierController.setStateWithUid(resultUid)"/>
+        </transition>
+        <transition on="cancel" to="view"/>
+    </subflow-state>
+</flow>
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/masterLayout.xhtml">
+
+	<ui:define name="title">#{resourceBundle['machine.admin.title']}</ui:define>
+	<ui:define name="body_title">#{resourceBundle['machine.admin.title']}</ui:define>
+
+	<ui:define name="body">
+		<h:form id="editMachineForm">
+			<h:panelGrid columns="3" width="60%">
+				<h:outputText value="#{resourceBundle['name']}:" />
+				<p:inputText value="#{machineModel.name}" id="name" label="#{resourceBundle['name']}" size="60">
+					<f:validateRequired />
+					<f:validateLength maximum="255" />					
+				</p:inputText>
+				
+				<p:message for="name" />
+			</h:panelGrid>
+
+			<br />
+			<br />
+
+			<p:commandButton value="#{resourceBundle['accept']}" update="@form"
+				action="confirm"/>
+
+			<p:commandButton value="#{resourceBundle['cancel']}"
+				action="cancel" immediate="true"/>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

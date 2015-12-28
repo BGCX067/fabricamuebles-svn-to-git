@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/masterLayout.xhtml">
+
+	<ui:define name="title">#{resourceBundle['wood.admin.title']}</ui:define>
+	<ui:define name="body_title">#{resourceBundle['wood.admin.title']}</ui:define>
+
+	<ui:define name="body">
+		<h:form id="editWoodForm" prependId="false">
+			<h:panelGrid columns="3" width="60%">
+                <h:outputText value="#{resourceBundle['wood.admin.width']}:" />
+                <p:inputText value="#{woodModel.width}" id="width" label="wood.admin.width" size="10"/>
+                <p:message for="width" />
+
+                <h:outputText value="#{resourceBundle['wood.admin.height']}:" />
+                <p:inputText value="#{woodModel.height}" id="height" label="wood.admin.height" size="10"/>
+                <p:message for="height" />
+
+                <h:outputText value="#{resourceBundle['wood.admin.depth']}:" />
+                <p:inputText value="#{woodModel.depth}" id="depth" label="wood.admin.depth" size="10"/>
+                <p:message for="depth" />
+
+				<h:outputText value="#{resourceBundle['description']}:" />
+				<p:inputTextarea value="#{woodModel.description}" id="description" label="#{resourceBundle['description']}" rows="3" cols="60"/>
+				<p:message for="description" />
+
+                <h:outputText value="#{resourceBundle['woodType']}:" />
+                <p:selectOneMenu id="woodType" value="#{woodModel.woodType}" converter="#{woodController}">
+                    <f:selectItems value="#{woodModel.woodTypeList}" var="woodType" itemLabel="#{woodType.name}"/>
+                </p:selectOneMenu>
+                <p:commandButton value="#{resourceBundle['new']}" update="@form"
+                                 action="newWoodType"/>
+                <p:commandButton value="#{resourceBundle['edit']}" update="@form"
+                                 action="editWoodType"/>
+                <p:message for="woodType" />
+			</h:panelGrid>
+
+			<br />
+			<br />
+			<p:commandButton value="#{resourceBundle['accept']}" update="@form"
+				action="confirm"/>
+
+			<p:commandButton value="#{resourceBundle['cancel']}"
+				action="cancel" immediate="true"/>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes"
+   xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="titulo_ventana">Registrar Orden de Compra</ui:define>
+    <ui:define name="titulo_pagina">Registrar Orden de Compra</ui:define>    
+    <ui:define name="pagina">
+        <style type="text/css">
+            .ui-notificationbar {
+                color:#000 !important;
+                height: auto !important;
+            }
+            .bottom {
+                background-color: #ddd;
+                padding:2em 0 2em 2em;
+                margin-left: 0;
+                margin-right: 0;
+                left: 0;
+                right: 0;
+            }
+        </style>
+        <h:form>
+            <h:outputText value="La Orden de Compra ha sido registrada con éxito."/><br/>
+            <h:outputText value="Haga click " />
+            <h:commandLink value="aquí" onclick="window.open('#{request.contextPath}/compras/OrdenesDeCompra/ordendeproduccion/imprimir.xhtml','impresion',''); return false;" />
+            <h:outputText value=" para imprimirla."/><br/>
+            <c:if test="#{vistaOrdenDeProduccion.ordenDeProduccionSeleccionada.quedaAlgoPorPedir()}">
+                <h:outputText value="Haga click " />
+                <h:commandLink value="aquí" action="#{VistaRegistrarOrdenDeCompra.seguirConOtraOrdenAPartirDeOrdenDeProduccion()}" />
+                <h:outputText value=" para registrar otra Orden de Compra con respecto a la Orden de Producción seleccionada."/><br/>
+            </c:if>
+            <c:if test="#{!vistaOrdenDeProduccion.ordenDeProduccionSeleccionada.quedaAlgoPorPedir()}">
+                <h:outputText value="El Pedido con respecto a la Orden de Producción seleccionada esta completo." /><br/>
+            </c:if>
+            <h:outputText value="Haga click " />
+            <h:commandLink value="aquí" action="/index?faces-redirect=true" />
+            <h:outputText value=" para proceder al Menú Principal."/>
+            <p:commandButton value="Mostrar Requerimientos de Material" onclick="bottomBar.show(); return false;" style="position: absolute; bottom: 2em; right: 2em;"/>
+        </h:form>
+        <p:notificationBar position="bottom" effect="fade" widgetVar="bottomBar" styleClass="bottom" autoDisplay="true">
+            <f:facet name="close">
+                <h:graphicImage library="images" name="closebar.png"/>
+            </f:facet>
+            <componentes:datosOrdenDeProduccion ordenDeProduccion="#{vistaOrdenDeProduccion.ordenDeProduccionSeleccionada}" mostrarDetalles="false" />
+        </p:notificationBar>
+    </ui:define>    
+</ui:composition>
+

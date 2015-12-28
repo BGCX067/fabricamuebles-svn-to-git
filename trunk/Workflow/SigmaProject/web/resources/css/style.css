@@ -1,0 +1,259 @@
+@charset "utf-8";
+/* CSS Document */
+
+#encabezado {
+    position: relative;
+}
+#logo {
+    top: 0px;
+    left: 0px;
+}
+#sesion {
+    top: 0px;
+    right: 0px;
+    position: absolute;
+}
+#titulo {
+    background-color: #336699;
+    height: 50px;
+    position: relative;
+}
+
+#titulo_texto {
+    top: 14px;
+    position: relative;
+    color: #FFFFFF;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:21px;
+    text-align: center;
+}
+#menu {
+    font-size: 15px;
+    margin-top: 10px;
+
+}
+#menu a{
+    text-decoration: none;
+}
+
+body
+{
+    /*text-align: center;*/
+    font-size: small !important;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+
+.center {
+    margin-left:auto; margin-right:auto;
+}
+
+div#pagina
+{
+    margin-left: 0;
+    margin-right: auto;
+    width: 1100px;
+    text-align: left;
+}
+#cuerpo {
+    margin-top: 10px;
+}
+.bordes-redondeados {
+    -moz-border-radius: 10px;
+}
+.titulo_panel {
+}
+.contenido_panel {
+}
+form {  /* set width in form, not fieldset (still takes up more room w/ fieldset width */
+    font:100% Lucida Grande,Lucida Sans,Arial,sans-serif;
+    margin: 0;
+    padding: 0;
+    min-width: 500px;
+    max-width: 950px;
+    width: 850px;
+}
+
+form fieldset {
+    /* clear: both; note that this clear causes inputs to break to left in ie5.x mac, commented out */
+
+    padding: 10px;        /* padding in fieldset support spotty in IE */
+    margin: 0;
+}
+
+form fieldset legend {
+    font-size:1.1em; /* bump up legend font size, not too large or it'll overwrite border on left */
+    /* be careful with padding, it'll shift the nice offset on top of border  */
+}
+
+form label {
+    display: block;  /* block float the labels to left column, set a width */
+    float: left;
+    width: 150px;
+    padding: 0;
+    margin: 5px 0 0; /* set top margin same as form input - textarea etc. elements */
+    text-align: right;
+}
+
+form fieldset label:first-letter { /* use first-letter pseudo-class to underline accesskey, note that */
+    text-decoration:underline;    /* Firefox 1.07 WIN and Explorer 5.2 Mac don't support first-letter */
+    /* pseudo-class on legend elements, but do support it on label elements */
+    /* we instead underline first letter on each label element and accesskey */
+    /* each input. doing only legends would  lessens cognitive load */
+    /* opera breaks after first letter underlined legends but not labels */
+}
+
+form input, form textarea, form select {
+    /* display: inline; inline display must not be set or will hide submit buttons in IE 5x mac */
+    width:auto;      /* set width of form elements to auto-size, otherwise watch for wrap on resize */
+    margin:5px 0 0 10px; /* set margin on left of form elements rather than right of
+                          label aligns textarea better in IE */
+}
+
+.valorCampo {
+    /* display: inline; inline display must not be set or will hide submit buttons in IE 5x mac */
+    width:auto;      /* set width of form elements to auto-size, otherwise watch for wrap on resize */
+    margin:5px 0 0 10px; /* set margin on left of form elements rather than right of
+                          label aligns textarea better in IE */
+}
+
+form input#reset {
+    margin-left:0px; /* set margin-left back to zero on reset button (set above) */
+}
+
+textarea { overflow: auto; }
+
+form small {
+    display: block;
+    margin: 0 0 5px 160px; /* instructions/comments left margin set to align w/ right column inputs */
+    padding: 1px 3px;
+    font-size: 88%;
+}
+
+form .required{font-weight:bold;} /* uses class instead of div, more efficient */
+
+form br {
+    clear:left; /* setting clear on inputs didn't work consistently, so brs added for degrade */
+}
+
+.botonesBottom {
+    float: right;
+    margin-top: 0.7em;
+    margin-bottom: 0.7em;
+}
+
+.error {
+    color: red;
+}
+
+.ui-widget {
+    font-size: small !important;
+}
+
+.ui-panel {
+    margin-top: 0.2em !important;
+}
+
+.ui-panel-titlebar {
+    padding-bottom: 0.2em !important;
+    padding-top: 0.2em !important;
+}
+
+.ui-button-text {
+    padding: 0 !important;
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+}
+
+.ui-button {
+    padding: 2px 6px !important;
+    margin-right: 10px !important;
+}
+
+#formAgregar {
+    width: 270px !important;
+    min-width: 240px;
+}
+
+#formEditar {
+    width: 270px !important;
+    min-width: 240px;
+}
+
+.combosUbicaciones {
+    width: 25em;
+}
+
+.camposCortos {
+    width: 3em;
+}
+
+.camposPrecio {
+    width: 6em;
+}
+
+.ajaxLoading {
+    width:16px;
+    height:16px;
+    z-index: 9999999;
+}
+
+.itemEstructuraProductoFabricable {
+    font-style: italic !important;
+    font-weight: bold !important;
+}
+
+.itemEstructuraProductoNoFabricable {
+    font-weight: bold !important;
+}
+
+.itemEstructuraProductoActividad {
+    font-weight: bold !important;
+}
+
+.radio {
+    float: right;
+    text-align: left !important;
+    width: 100px;
+    margin-left: 5px;
+}
+
+/*Remove downward facing triangle from submenus*/
+.wijmo-wijmenu-link > .ui-icon-triangle-1-s {
+    display: none !important;
+}
+/*Let submenu width be based on content*/
+.wijmo-wijmenu .wijmo-wijmenu-parent .wijmo-wijmenu-child {
+    width: auto;
+}
+/*Prevent rightward facing icons from wrapping*/
+.wijmo-wijmenu-parent > .wijmo-wijmenu-link > span.ui-icon-triangle-1-e {
+    position: absolute;
+    height:16px;
+    top:50%;
+    margin-top:-8px;
+    right: -8px;
+}
+/*Make room for righward facing icons*/
+.wijmo-wijmenu ul.wijmo-wijmenu-child {
+    padding-right: 16px !important;
+}
+/*Set link width, which affects submenu overlap and is related to rightward facing icon padding*/
+.wijmo-wijmenu-child .wijmo-wijmenu-link {
+    width: 100% !important;
+}
+/*Prevent menuitem icon from generating a line break. Also make room for left-side icon.  Note: we use relative parent absolute child strategy*/
+.wijmo-wijmenu-child > .wijmo-wijmenu-item > .wijmo-wijmenu-link > .wijmo-wijmenu-text {
+    position: relative !important;
+    margin-left: 16px !important;
+}
+.wijmo-wijmenu-child > .wijmo-wijmenu-item > .wijmo-wijmenu-link > .wijmo-wijmenu-text > .wijmo-wijmenu-icon-left {
+    position: absolute;
+    height:16px;
+    top:50%;
+    margin-top:-8px;
+    left: -16px;
+}
+/*Set border (this is specific to black-tie theme)*/
+.ui-widget-content, .wijmo-wijmenu .ui-widget-content {
+    border: 1px solid #CCCCCC;
+}

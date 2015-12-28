@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="tipoMadera" required="true" type="entidades.TipoMadera"/>
+        <composite:attribute name="editable" required="false" default="false"/>
+        <composite:attribute name="groupbox" required="false" default="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <h:outputLabel for="nombre">Nombre:</h:outputLabel>
+        <h:inputText id="nombre" value="#{cc.attrs.tipoMadera.nombre}" readonly="#{!cc.attrs.editable}"/>
+        <h:outputLabel for="descripcion">Descripción:</h:outputLabel>
+        <h:inputText id="descripcion" value="#{cc.attrs.tipoMadera.descripcion}" readonly="#{!cc.attrs.editable}"/>
+    </composite:implementation>
+
+</html>

@@ -1,0 +1,5 @@
+cambiar las fechas de una op (con limite minimo de la op anterior y moviendo las siguientes)
+
+intercambiar posicion de op contiguas
+
+borrar pedidodetalle de op (vuelve al pmp)

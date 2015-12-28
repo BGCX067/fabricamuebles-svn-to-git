@@ -1,0 +1,291 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="titulo_ventana">Registrar Estructura de Producto</ui:define>
+    <ui:define name="titulo_pagina">Registrar Estructura de Producto</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false">
+            <h2>#{vistaActividad.fabricableSeleccionado.nombre}</h2>
+            <p>Puede definir la estructura del producto seleccionado:</p>
+            <h:selectOneRadio enabledClass="radio" id="estructuraAMostrar" value="#{vistaActividad.queMuestro}" layout="pageDirection" style="width: 150px;">
+                <f:selectItem itemLabel="Req. Material" itemValue="0" />
+                <f:selectItem itemLabel="Actividad" itemValue="1" />
+                <p:ajax event="change" process="estructuraAMostrar" update="panelEstructura" />
+            </h:selectOneRadio><br/>
+            <h:panelGroup id="panelEstructura">
+                <h:panelGroup id="panelActividades" rendered="#{vistaActividad.queMuestro == 1}">
+                    <h:panelGroup style="float: left; width: 40%; overflow: auto">
+                        <p:fieldset legend="Actividades">
+                            <p:dataTable id="listadoActividades"
+                                         var="fila"
+                                         value="#{vistaActividad.fabricableSeleccionado.actividades}"
+                                         onRowSelectUpdate="panelDetalleActividad"
+                                         selectionMode="single"
+                                         selection="#{vistaActividad.actividadEspecificaSeleccionada}"
+                                         paginator="true"
+                                         dynamic="true"
+                                         lazy="true"
+                                         rows="5"
+                                         nextPageLinkLabel="Siguiente >"
+                                         lastPageLinkLabel="Último >>"
+                                         previousPageLinkLabel="&lt; Anterior"
+                                         firstPageLinkLabel="&lt;&lt; Primero"
+                                         emptyMessage="No hay registros cargados"
+                                         errorMessage="Hubo un error cargando los datos"
+                                         loadingMessage="Cargando..."
+                                         >
+                                <p:column sortBy="#{fila.secuencia}">
+                                    <f:facet name="header">
+                                        Secuencia
+                                    </f:facet>
+                                    #{fila.secuencia}
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        Nombre
+                                    </f:facet>
+                                    #{fila.nombre}
+                                </p:column>
+                            </p:dataTable>
+                            <h:panelGroup styleClass="botonesBottom">
+                                <p:commandButton value="Agregar" process="@none" update="panelDialogoActividades" onsuccess="dialogoAgregarActividad.show()" />
+                            </h:panelGroup>
+                        </p:fieldset>
+                    </h:panelGroup>
+                    <h:panelGroup id="panelDetalleActividad" layout="block" style="margin-left: 41%; width: 59%; overflow: hidden">
+                        <p:fieldset legend="Detalle Actividad">
+                            <h:outputLabel for="nombre" style="width: 120px;">Nombre:</h:outputLabel>
+                            <h:inputText id="nombre" value="#{vistaActividad.actividadEspecificaSeleccionada.nombre}" readonly="#{vistaActividad.actividadEspecificaSeleccionada == null}" >
+                                <p:ajax event="change" process="nombre" update="mensajes nombre panelActividades" oncomplete="document.getElementById('secuencia').focus()"/>
+                            </h:inputText><br/>
+                            <h:outputLabel for="secuencia" style="width: 120px;">Secuencia:</h:outputLabel>
+                            <h:inputText id="secuencia" value="#{vistaActividad.actividadEspecificaSeleccionada.secuencia}" readonly="#{vistaActividad.actividadEspecificaSeleccionada == null}">
+                                <p:ajax event="change" process="secuencia" update="mensajes secuencia panelActividades" oncomplete="document.getElementById('duracion').focus()"/>
+                            </h:inputText><br/>
+                            <h:outputLabel for="duracion" style="width: 120px;">Duración:</h:outputLabel>
+                            <h:inputText id="duracion" value="#{vistaActividad.actividadEspecificaSeleccionada.duracionEnMinutos}" readonly="#{vistaActividad.actividadEspecificaSeleccionada == null}">
+                                <p:ajax event="change" process="duracion" update="mensajes duracion" oncomplete="document.getElementById('maquinaTipoUsada').focus()"/>
+                            </h:inputText> (en minutos)<br/>
+                            <h:outputLabel for="maquinaTipoUsada" style="width: 120px">Tipo de Máquina: </h:outputLabel>
+                            <h:inputText id="maquinaTipoUsada" value="#{vistaActividad.actividadEspecificaSeleccionada.maquinaTipo.nombre}" readonly="true"/>
+                            <p:commandButton id="seleccionarMaquinaTipo" style="margin-left: 8px;" value="Seleccionar" disabled="#{vistaActividad.actividadEspecificaSeleccionada == null}" process="@none" update="@none" onsuccess="dialogoSeleccionarMaquinaTipo.show();" /><br/>
+                            <h3>Tipos de Herramientas:</h3>
+                            <p:dataTable id="listadoHerramientasTipoActividad"
+                                         var="fila"
+                                         value="#{vistaActividad.actividadEspecificaSeleccionada.herramientasTipo}"
+                                         paginator="true"
+                                         dynamic="true"
+                                         lazy="true"
+                                         rows="5"
+                                         nextPageLinkLabel="Siguiente >"
+                                         lastPageLinkLabel="Último >>"
+                                         previousPageLinkLabel="&lt; Anterior"
+                                         firstPageLinkLabel="&lt;&lt; Primero"
+                                         emptyMessage="No hay registros cargados"
+                                         errorMessage="Hubo un error cargando los datos"
+                                         loadingMessage="Cargando..."
+                                         >
+                                <p:column>
+                                    <f:facet name="header">
+                                        Nombre
+                                    </f:facet>
+                                    #{fila.nombre}
+                                </p:column>
+                            </p:dataTable>
+                            <h:panelGroup styleClass="botonesBottom">
+                                <p:commandButton id="agregarHerramientaTipo" value="Agregar" disabled="#{vistaActividad.actividadEspecificaSeleccionada == null}" process="@none" update="panelListadoHerramientasTipo" onsuccess="dialogoAgregarHerramientasTipo.show();" /><br/>
+                            </h:panelGroup>
+                        </p:fieldset>
+                    </h:panelGroup>
+                </h:panelGroup>
+                <h:panelGroup id="panelRequerimientos" rendered="#{vistaActividad.queMuestro == 0}">
+                    <p:fieldset legend="Requerimientos Materiales">
+                        <p:dataTable id="listadoRequerimientosMateriales"
+                                     var="fila"
+                                     value="#{vistaActividad.fabricableSeleccionado.requerimientosMateriales}"
+                                     paginator="true"
+                                     dynamic="true"
+                                     lazy="true"
+                                     rows="5"
+                                     nextPageLinkLabel="Siguiente >"
+                                     lastPageLinkLabel="Último >>"
+                                     previousPageLinkLabel="&lt; Anterior"
+                                     firstPageLinkLabel="&lt;&lt; Primero"
+                                     emptyMessage="No hay registros cargados"
+                                     errorMessage="Hubo un error cargando los datos"
+                                     loadingMessage="Cargando..."
+                                     >
+                            <p:column>
+                                <f:facet name="header">
+                                    Cantidad
+                                </f:facet>
+                                #{fila.cantidadRequerida}
+                            </p:column>
+                            <p:column filterBy="#{fila.itemRequerible.nombre}" sortBy="#{fila.itemRequerible.nombre}">
+                                <f:facet name="header">
+                                    Articulo
+                                </f:facet>
+                                #{fila.itemRequerible.nombre}
+                            </p:column>
+                        </p:dataTable>
+                        <h:panelGroup styleClass="botonesBottom">
+                            <p:commandButton id="agregarArticulo" action="#{vistaActividad.actualizarListaRequeriblesAAgregar()}" value="Agregar Artículo" process="@this" onsuccess="dialogoAgregarRequerimientoMaterial.show();" update="panelListadoRequeribles" />
+                        </h:panelGroup>
+                    </p:fieldset>
+                </h:panelGroup>
+                <p:messages id="mensajes"/>
+                <h:panelGroup styleClass="botonesBottom">
+                    <p:commandButton value="Registrar Estructura de Producto" action="#{vistaMuebleModelo.registrarEstructuraMuebleModelo(vistaActividad.muebleSeleccionado)}" process="@this" onsuccess="location='planificacion.xhtml'" />
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:form>
+        <p:dialog widgetVar="dialogoAgregarActividad" width="400" resizable="false" modal="true">
+            <h:form prependId="false" style="min-width: 280px; width: 380px">
+                <h:panelGroup id="panelDialogoActividades">
+                    <p>A continuación, ingrese el nombre y la secuencia de la nueva Actividad:</p>
+                    <h:outputLabel for="nombreActividad">Nombre:</h:outputLabel>
+                    <h:inputText id="nombreActividad" value="#{vistaActividad.nombreActividad}" />
+                    <h:outputLabel for="secuenciaIngreso">Secuencia:</h:outputLabel>
+                    <h:inputText id="secuenciaIngreso" value="#{vistaActividad.secuenciaActividad}" /><br/>
+                    <h:panelGroup styleClass="botonesBottom">
+                        <p:commandButton value="Agregar" action="#{vistaActividad.agregarActividadNuevaAFabricableSeleccionado()}" update="panelActividades panelDetalleActividad" onsuccess="dialogoAgregarActividad.hide()" />
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+        <p:dialog widgetVar="dialogoAgregarRequerimientoMaterial" width="450" modal="true" resizable="false">
+            <h:form prependId="false" style="min-width: 420px; width: 420px;">
+                <h:panelGroup id="panelListadoRequeribles">
+                    <p:dataTable id="listadoRequeribles"
+                                 var="fila"
+                                 value="#{vistaActividad.requeriblesAAgregar}"
+                                 selection="#{vistaActividad.requeribleSeleccionado}"
+                                 onRowSelectComplete="dialogoAgregarRequerimientoMaterial.hide(); dialogoAgregarRequerimientoMaterialSeleccionarCantidad.show()"
+                                 onRowSelectUpdate="panelDialogoCantidadRM"
+                                 selectionMode="single"
+                                 paginator="true"
+                                 dynamic="false"
+                                 lazy="false"
+                                 rows="5"
+                                 nextPageLinkLabel="Siguiente >"
+                                 lastPageLinkLabel="Último >>"
+                                 previousPageLinkLabel="&lt; Anterior"
+                                 firstPageLinkLabel="&lt;&lt; Primero"
+                                 emptyMessage="No hay registros cargados"
+                                 errorMessage="Hubo un error cargando los datos"
+                                 loadingMessage="Cargando..."
+                                 >
+                        <p:column filterBy="#{fila.tipo}" sortBy="#{fila.tipo}">
+                            <f:facet name="header">
+                                Tipo
+                            </f:facet>
+                            #{fila.tipo}
+                        </p:column>
+                        <p:column filterBy="#{fila.nombre}" sortBy="#{fila.nombre}">
+                            <f:facet name="header">
+                                Nombre
+                            </f:facet>
+                            #{fila.nombre}
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+        <p:dialog widgetVar="dialogoAgregarRequerimientoMaterialSeleccionarCantidad" width="380" modal="true" resizable="false">
+            <h:form prependId="false" style="min-width: 350px; width: 350px;">
+                <h:panelGroup id="panelDialogoCantidadRM">
+                    <h:outputLabel for="cantidad1">Cantidad:</h:outputLabel>
+                    <h:inputText id="cantidad1" value="#{vistaActividad.cantidad}" /><br/>
+                    <h:panelGroup styleClass="botonesBottom">
+                        <p:commandButton value="Agregar" action="#{vistaActividad.agregarRequerimientoMaterial()}" update="panelRequerimientos" onsuccess="dialogoAgregarRequerimientoMaterialSeleccionarCantidad.hide()" />
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+        <p:dialog widgetVar="dialogoAgregarHerramientasTipo" width="450" modal="true" resizable="false">
+            <h:form prependId="false" style="min-width: 420px; width: 420px;">
+                <h:panelGroup id="panelListadoHerramientasTipo">
+                    <p:dataTable id="listadoHerramientasTipo"
+                                 var="fila"
+                                 value="#{vistaActividad.devolverHerramientasTipoAAgregar()}"
+                                 selection="#{vistaActividad.herramientaTipoSeleccionada}"
+                                 selectionMode="single"
+                                 onRowSelectComplete="dialogoAgregarHerramientasTipo.hide()"
+                                 onRowSelectUpdate="panelDetalleActividad"
+                                 paginator="true"
+                                 dynamic="true"
+                                 lazy="true"
+                                 rows="5"
+                                 nextPageLinkLabel="Siguiente >"
+                                 lastPageLinkLabel="Último >>"
+                                 previousPageLinkLabel="&lt; Anterior"
+                                 firstPageLinkLabel="&lt;&lt; Primero"
+                                 emptyMessage="No hay registros cargados"
+                                 errorMessage="Hubo un error cargando los datos"
+                                 loadingMessage="Cargando..."
+                                 >
+                        <p:column>
+                            <f:facet name="header">
+                                Tipo de Herramienta
+                            </f:facet>
+                            #{fila.nombre}
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+        <p:dialog widgetVar="dialogoSeleccionarMaquinaTipo" width="450" modal="true" resizable="false">
+            <h:form prependId="false" style="min-width: 420px; width: 420px;">
+                <h:panelGroup id="panelListadoMaquinaTipo">
+                    <p:dataTable id="listadoMaquinaTipo"
+                                 var="fila"
+                                 value="#{vistaActividad.devolverMaquinasTipo()}"
+                                 selection="#{vistaActividad.maquinaTipoSeleccionada}"
+                                 selectionMode="single"
+                                 onRowSelectUpdate="panelDetalleActividad"
+                                 onRowSelectComplete="dialogoSeleccionarMaquinaTipo.hide()"
+                                 paginator="true"
+                                 dynamic="true"
+                                 lazy="true"
+                                 rows="5"
+                                 nextPageLinkLabel="Siguiente >"
+                                 lastPageLinkLabel="Último >>"
+                                 previousPageLinkLabel="&lt; Anterior"
+                                 firstPageLinkLabel="&lt;&lt; Primero"
+                                 emptyMessage="No hay registros cargados"
+                                 errorMessage="Hubo un error cargando los datos"
+                                 loadingMessage="Cargando..."
+                                 >
+                        <p:column>
+                            <f:facet name="header">
+                                Máquina
+                            </f:facet>
+                            #{fila.nombre}
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+        <p:dialog widgetVar="dialogoAgregarParte">
+            <h:form prependId="false">
+                <h:panelGroup id="panelDialogoAgregarParte">
+                    <h:outputLabel for="nombreParte">Nombre:</h:outputLabel>
+                    <h:inputText id="nombreParte" value="#{vistaActividad.nombreParte}" /><br/>
+                    <h:outputLabel for="descripcion">Descrición:</h:outputLabel>
+                    <h:inputTextarea id="descripcion" value="#{vistaActividad.descripcionParte}" /><br/>
+                    <h:outputLabel for="cantidad2">Cantidad:</h:outputLabel>
+                    <h:inputTextarea id="cantidad2" value="#{vistaActividad.cantidad}" /><br/>
+                    <h:panelGroup styleClass="botonesBottom">
+                        <p:commandButton value="Agregar" action="#{vistaActividad.agregarParteMueble()}" update="listadoRequerimientosMateriales panelEstructura" onsuccess="dialogoAgregarParte.hide()" />
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

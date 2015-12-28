@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Presupuesto</ui:define>
+    <ui:define name="titulo_pagina">Datos de Presupuesto</ui:define>
+    <ui:define name="pagina">
+        <p>A continuación, se muestran los datos del Presupuesto seleccionado.<br/></p>
+        <h:form prependId="false">
+            <componentes:datosPresupuestos vista="#{generico}" presupuesto="#{generico.presupuestoSeleccionado}" editable="false"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" action="verListado"/>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+

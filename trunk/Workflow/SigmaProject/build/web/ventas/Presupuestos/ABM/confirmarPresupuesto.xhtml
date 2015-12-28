@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Registrar Presupuesto</ui:define>
+    <ui:define name="titulo_pagina">Registrar Presupuesto</ui:define>
+    <ui:define name="pagina">
+        <h:form>
+            <p>A continuación, muestran los datos ingresados para confirmar:</p>
+            <componentes:datosPresupuestos presupuesto="#{vistaPresupuesto.presupuestoSeleccionado}" editable="true" mostrarEstado="false"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" action="seleccionarMuebles?faces-redirect=true"/>
+                <p:commandButton value="Confirmar" action="#{vistaPresupuesto.confirmarPresupuesto}" onsuccess="location='informarPresupuestoRegistrado.xhtml'"/>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

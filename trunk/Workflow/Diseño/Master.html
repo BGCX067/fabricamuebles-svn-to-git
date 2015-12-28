@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="./javascript/DD_roundies_0.0.2a-min.js"></script>
+<script type="text/javascript">
+    /* varying radii, "all" browsers */
+    DD_roundies.addRule('.bordes-redondeados', '10px', true);
+    if (navigator.appName.match("Explorer") == null) {
+        DD_roundies.addRule('fieldset', '10px', true);
+    }
+    function getWindowHeight() {
+        var windowHeight = 0;
+        if (typeof(window.innerHeight) == 'number') {
+            windowHeight = window.innerHeight;
+        }
+        else {
+            if (document.documentElement && document.documentElement.clientHeight) {
+                windowHeight = document.documentElement.clientHeight;
+            }
+            else {
+                if (document.body && document.body.clientHeight) {
+                    windowHeight = document.body.clientHeight;
+                }
+            }
+        }
+        return windowHeight;
+    }
+    function setContent() {
+        if (document.getElementById) {
+            var windowHeight = getWindowHeight();
+            if (windowHeight > 0) {
+                var contentElement = document.getElementById('pagina');
+                var contentHeight = contentElement.offsetHeight;
+                if (windowHeight - contentHeight > 0) {
+                    contentElement.style.position = 'relative';
+                }
+                else {
+                    contentElement.style.position = 'static';
+                }
+            }
+        }
+    }
+    window.onload = function() {
+        setContent();
+    }
+    window.onresize = function() {
+        setContent();
+    }
+</script>
+</head>
+
+<body>
+<div id="pagina">
+    <div id="encabezado">
+        <div id="logo">
+          <img src="./images/logo.jpg" width="220px" height="80px"/>
+        </div>
+        <div id="sesion">
+          Bienvenido Cristian <a href="#">(Cerrar Sesión)</a>
+        </div>
+    </div>
+    <div id="titulo" class="bordes-redondeados">
+      <div id="titulo_texto">Título</div>
+    </div>
+	<div id="menu">
+        <a href="#">Item1</a> > <a href="#">Item2</a> > Item3
+    </div>    
+  <div id="cuerpo">  
+    <form id="panel" class="contenido_panel">
+      <fieldset>
+        <legend class="titulo_panel">Titulo</legend>
+                <label for="valor">Campo: </label>
+        <input id="valor" type="text" name="input" /><br />
+                <label for="valor2">Campo: </label>
+                    <textarea id="valor2" name="input"></textarea>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>

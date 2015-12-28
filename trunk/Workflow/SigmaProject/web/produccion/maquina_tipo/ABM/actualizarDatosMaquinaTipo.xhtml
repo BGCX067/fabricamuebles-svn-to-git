@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Actualizar Tipo de Máquina</ui:define>
+    <ui:define name="titulo_pagina">Actualizar Tipo de Máquina</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false">
+            <p>A continuación se muestran los datos del Tipo de Máquina para su modificación:</p>
+            <componentes:datosMaquinaTipo maquinaTipo="#{vistaMaquinaTipo.maquinaTipoSeleccionada}" editable="true"/>
+            <p:messages id="mensajes" showDetail="true" showSummary="true"/>
+            <div class="botonesBottom">
+                <p:commandButton value="Volver" immediate="true" action="#{vistaMaquinaTipo.descartarCambiosMaquina(vistaMaquinaTipo.maquinaTipoSeleccionada)}"/>
+                <p:commandButton value="Actualizar datos" action="#{vistaMaquinaTipo.actualizarMaquinaTipo(vistaMaquinaTipo.maquinaTipoSeleccionada)}" onsuccess="location='#{request.contextPath}/produccion/maquina_tipo/Listado/mostrarDatosMaquinaTipo.xhtml'" />
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+

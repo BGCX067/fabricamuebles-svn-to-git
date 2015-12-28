@@ -1,0 +1,45 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="seleccionNavegable" default="false" />
+        <composite:attribute name="paginaSiguiente" />
+    </composite:interface>
+
+    <composite:implementation>
+        <c:if test="#{cc.attrs.seleccionNavegable == true}">
+            <p:dataTable id="listadoMaderasTipo"
+                         var="fila"
+                         value="#{vistaArticulo.devolverMaderaTipos()}"
+                         onRowSelectUpdate="@none"
+                         onRowSelectComplete="location='#{cc.attrs.paginaSiguiente}'"
+                         selectionMode="single"
+                         selection="#{vistaArticulo.maderaTipoSeleccionada}"
+                         paginator="true"
+                         dynamic="true"
+                         lazy="false"
+                         rows="5"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos"
+                         loadingMessage="Cargando..."
+                         >
+                <p:column filterBy="#{fila.nombre}" filterMatchMode="contains" sortBy="#{fila.nombre}">
+                    <f:facet name="header">
+                        Nombre
+                    </f:facet>
+                    #{fila.nombre}
+                </p:column>
+            </p:dataTable>
+        </c:if>
+    </composite:implementation>
+</html>

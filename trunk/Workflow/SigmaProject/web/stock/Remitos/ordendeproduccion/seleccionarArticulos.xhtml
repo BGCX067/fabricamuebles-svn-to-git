@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Registrar Remito de Abastecimiento Externo</ui:define>
+    <ui:define name="titulo_pagina">Registrar Remito de Abastecimiento Externo</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false">
+            <p:dialog width="450" widgetVar="listaArticulos" modal="true" closeOnEscape="true" visible="false" draggable="false" resizable="false" header="Lista de Artículos" >
+                <p:dataTable
+                    var="fila"
+                    value="#{vistaArticulo.devolverArticulos()}"
+                    paginator="true"
+                    dynamic="true"
+                    lazy="true"
+                    rows="5"
+                    nextPageLinkLabel="Siguiente >"
+                    lastPageLinkLabel="Último >>"
+                    previousPageLinkLabel="&lt; Anterior"
+                    firstPageLinkLabel="&lt;&lt; Primero"
+                    emptyMessage="No hay registros cargados"
+                    errorMessage="Hubo un error cargando los datos"
+                    loadingMessage="Cargando..."
+                    >
+                    <p:column filterBy="#{fila.tipo}" sortBy="#{fila.tipo}">
+                        <f:facet name="header">
+                            Tipo
+                        </f:facet>
+                        #{fila.tipo}
+                    </p:column>
+                    <p:column filterBy="#{fila.nombre}" filterMatchMode="contains" sortBy="#{fila.nombre}">
+                        <f:facet name="header">
+                            Nombre
+                        </f:facet>
+                        #{fila.nombre}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Acción
+                        </f:facet>
+                        <p:commandButton value="Agregar" action="#{vistaRemito.agregarArticulo(fila)}" onsuccess="listaArticulos.hide();document.formAgregar.cantidadAgregar.value='';dlg.show();document.formAgregar.cantidadAgregar.focus();" />
+                    </p:column>
+                </p:dataTable>
+            </p:dialog>
+            <p>Por favor, seleccione los artículos para agregar al Remito:</p>
+            <p:dataTable
+                var="fila"
+                value="#{vistaRemito.detallesAgregados}"
+                paginator="true"
+                rows="5"
+                dynamic="true"
+                lazy="true"
+                nextPageLinkLabel="Siguiente >"
+                lastPageLinkLabel="Último >>"
+                previousPageLinkLabel="&lt; Anterior"
+                firstPageLinkLabel="&lt;&lt; Primero"
+                emptyMessage="No hay registros cargados"
+                errorMessage="Hubo un error cargando los datos"
+                loadingMessage="Cargando..."
+                id="tablaDestino"
+                >
+                <p:column filterBy="#{fila.articulo.tipo}" sortBy="#{fila.articulo.tipo}">
+                    <f:facet name="header">
+                        Tipo
+                    </f:facet>
+                    #{fila.articulo.tipo}
+                </p:column>
+                <p:column filterBy="#{fila.articulo.nombre}" filterMatchMode="contains" sortBy="#{fila.articulo.nombre}">
+                    <f:facet name="header">
+                        Nombre
+                    </f:facet>
+                    #{fila.articulo.nombre}
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Cantidad
+                    </f:facet>
+                    #{fila.cantidad}
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Acción
+                    </f:facet>
+                    <p:commandButton value="Editar" action="#{vistaRemito.cargarArticuloCantidad(fila)}" onsuccess="document.formEditar.cantidadEditar.value=#{fila.cantidad};dlg2.show();document.formEditar.cantidadEditar.focus();" />
+                    <p:commandButton value="Quitar" action="#{vistaRemito.quitarArticuloAgregado(fila)}" onsuccess="location.reload(true);"/>
+                </p:column>
+            </p:dataTable>
+            <h:outputText styleClass="error" value="#{vistaRemito.error}"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" action="seleccionarOrdenDeProduccion?faces-redirect=true"/>
+                <p:commandButton value="Agregar Artículos" onclick="listaArticulos.show();"/>
+                <p:commandButton ajax="false" value="Siguiente" action="#{vistaRemito.seleccionarArticulosSiguiente}"/>
+            </div>
+        </h:form>
+        <h:outputScript library="javascript" name="validacion.js" />
+        <p:dialog modal="true" header="Ingrese la cantidad" width="300" widgetVar="dlg" visible="false" draggable="false" resizable="false" closeOnEscape="true">
+            <h:form prependId="false" id="formAgregar">
+                <h:panelGrid columns="2" style="margin-bottom:10px">
+                    <h:outputLabel for="cantidadAgregar" value="Ingrese la cantidad asociada:" />
+                    <h:inputText style="width:100px" id="cantidadAgregar" value="#{vistaRemito.setearCantidadYAgregar}"/>
+                </h:panelGrid>
+                <p:commandButton styleClass="botonesBottom" value="Aceptar" oncomplete="dlg.hide();" update="tablaDestino" onclick="return validarCantidadAgregar()"/>
+            </h:form>
+        </p:dialog>
+        <p:dialog modal="true" header="Cambiar la cantidad" width="300" widgetVar="dlg2" visible="false" draggable="false" resizable="false" closeOnEscape="true">
+            <h:form prependId="false" id="formEditar">
+                <h:panelGrid columns="2" style="margin-bottom:10px">
+                    <h:outputLabel for="cantidadEditar" value="Ingrese la cantidad asociada:" />
+                    <h:inputText style="width:100px" id="cantidadEditar" value="#{vistaRemito.setearCantidadYGuardar}"/>
+                </h:panelGrid>
+                <p:commandButton styleClass="botonesBottom" value="Aceptar" oncomplete="dlg2.hide();" update="tablaDestino" onclick="return validarEditarDetalle()"/>
+            </h:form>
+        </p:dialog>        
+    </ui:define>
+</ui:composition>
+
+

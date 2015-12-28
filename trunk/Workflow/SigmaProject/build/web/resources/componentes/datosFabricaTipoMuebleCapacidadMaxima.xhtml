@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="fabrica" required="true" type="entidades.Fabrica" />
+        <composite:attribute name="editable" required="false" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+
+        <componentes:datosFabricas fabrica="#{vistaFabrica.fabricaSeleccionada}"/><br/>
+        <p:dataTable
+            var="fila"
+            value="#{cc.attrs.fabrica.muebleTipoCapacidadesMaximas}"
+            >
+            <p:column>
+                <f:facet name="header">
+                    Nombre
+                </f:facet>
+                #{fila.muebleTipo.nombre}
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    Capacidad Maxima
+                </f:facet>
+                #{fila.capacidadMaxima}
+            </p:column>
+
+        </p:dataTable><br/>
+       
+    </composite:implementation>
+
+</html>

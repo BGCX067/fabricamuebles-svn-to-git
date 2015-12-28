@@ -1,0 +1,16 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Cargado de Datos de Ejemplo</ui:define>
+    <ui:define name="titulo_pagina">Cargado de Datos de Ejemplo</ui:define>
+    <ui:define name="pagina">
+        #{vistaDatosPrueba.cargarDatosPrueba()}
+    </ui:define>
+</ui:composition>
+
+

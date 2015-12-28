@@ -1,0 +1,139 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Registrar Venta</ui:define>
+    <ui:define name="titulo_pagina">Registrar Venta</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false">
+            <p:dialog width="600" widgetVar="listaMuebles" modal="true" closeOnEscape="true" visible="false" draggable="false" resizable="false" header="Lista de Muebles" >
+                <p:dataTable
+                    var="fila"
+                    value="#{vistaFactura.devolverMueblesModelo()}"
+                    onRowSelectComplete="listaMuebles.hide(); dialogoPedirCantidad.show();"
+                    onRowSelectUpdate="panelAgregar"
+                    selectionMode="single"
+                    selection="#{vistaFactura.muebleModeloSeleccionado}"
+                    paginator="true"
+                    dynamic="true"
+                    lazy="true"
+                    rows="5"
+                    nextPageLinkLabel="Siguiente >"
+                    lastPageLinkLabel="Último >>"
+                    previousPageLinkLabel="&lt; Anterior"
+                    firstPageLinkLabel="&lt;&lt; Primero"
+                    emptyMessage="No hay registros cargados"
+                    errorMessage="Hubo un error cargando los datos"
+                    loadingMessage="Cargando..."
+                    >
+                    <p:column filterBy="#{fila.nombre}" filterMatchMode="contains" sortBy="#{fila.nombre}">
+                        <f:facet name="header">
+                            Mueble
+                        </f:facet>
+                        #{fila.nombre}
+                    </p:column>
+                    <p:column sortBy="#{fila.stockActual}">
+                        <f:facet name="header">
+                            Stock Actual
+                        </f:facet>
+                        #{fila.stockActual}
+                    </p:column>
+                    <p:column sortBy="#{fila.stockDisponible}">
+                        <f:facet name="header">
+                            Stock Disponible
+                        </f:facet>
+                        #{fila.stockDisponible}
+                    </p:column>
+                    <p:column sortBy="#{fila.precioVenta}">
+                        <f:facet name="header">
+                            Precio
+                        </f:facet>
+                        <h:outputText value="#{fila.precioVenta}" >
+                            <f:convertNumber currencySymbol="$" type="currency" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </p:dialog>
+            <p>Por favor, seleccione los productos para agregar la Venta:</p>
+            <p:dataTable
+                var="fila"
+                value="#{vistaFactura.facturaSeleccionada.detalles}"
+                paginator="true"
+                rows="5"
+                dynamic="true"
+                lazy="true"
+                nextPageLinkLabel="Siguiente >"
+                lastPageLinkLabel="Último >>"
+                previousPageLinkLabel="&lt; Anterior"
+                firstPageLinkLabel="&lt;&lt; Primero"
+                emptyMessage="No hay registros cargados"
+                errorMessage="Hubo un error cargando los datos"
+                loadingMessage="Cargando..."
+                id="tablaDestino"
+                >
+                <p:column>
+                    <f:facet name="header">
+                        Cantidad
+                    </f:facet>
+                    #{fila.cantidad}
+                </p:column>
+                <p:column filterBy="#{fila.muebleModelo.nombre}" filterMatchMode="contains" sortBy="#{fila.muebleModelo.nombre}">
+                    <f:facet name="header">
+                        Nombre
+                    </f:facet>
+                    #{fila.muebleModelo.nombre}
+                </p:column>
+                <p:column sortBy="#{fila.precio}">
+                    <f:facet name="header">
+                        Precio Individual
+                    </f:facet>
+                    <h:outputText value="#{fila.precio}" >
+                        <f:convertNumber currencySymbol="$" type="currency" />
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Acción
+                    </f:facet>
+                    <p:commandButton value="Editar" action="#{vistaFactura.seleccionDetalle(fila)}" update="panelEditar" onsuccess="dialogoEditar.show()"/>
+                    <p:commandButton value="Quitar" ajax="false" action="#{vistaFactura.quitarDetalle(fila)}"/>
+                </p:column>
+            </p:dataTable>
+            <h:outputText styleClass="error" value="#{vistaFactura.error}"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" action="mostrarDatosCliente?faces-redirect=true"/>
+                <p:commandButton value="Agregar Productos" action="#{vistaFactura.accionAgregar()}" onclick="listaMuebles.show();" update="panelAgregar"/>
+                <p:commandButton ajax="false" value="Siguiente" action="#{vistaFactura.siguienteSeleccionarMuebles()}"/>
+            </div>
+        </h:form>
+        <h:outputScript library="javascript" name="validacion.js" />
+        <p:dialog modal="true" header="Ingrese la cantidad" width="300" widgetVar="dialogoPedirCantidad" visible="false" draggable="false" resizable="false" closeOnEscape="true">
+            <h:form prependId="false" id="formAgregar">
+                <h:panelGroup id="panelAgregar">
+                    <h:outputLabel style="width: 100px;" for="cantidadAgregar" value="Cantidad:" />
+                    <h:inputText style="width:100px" id="cantidadAgregar" value="#{vistaFactura.cantidad}"/>
+                    <h:outputLabel style="width: 100px;" for="cantidadMaxima" value="Stock:" />
+                    <h:inputText style="width:100px" id="cantidadMaxima" value="#{vistaFactura.muebleModeloSeleccionado.stockDisponible}" disabled="true" />
+                </h:panelGroup>
+                <p:commandButton styleClass="botonesBottom" value="Aceptar" action="#{vistaFactura.agregarDetalleVenta()}" oncomplete="dialogoPedirCantidad.hide();" update="tablaDestino" onclick="return validarCantidadAgregarStock()"/>
+            </h:form>
+        </p:dialog>
+        <p:dialog modal="true" header="Editar el detalle" width="300" widgetVar="dialogoEditar" visible="false" draggable="false" resizable="false" closeOnEscape="true">
+            <h:form prependId="false" id="formEditar">
+                <h:panelGroup id="panelEditar">
+                    <h:outputLabel style="width: 100px;" for="cantidadEditar" value="Cantidad:" />
+                    <h:inputText style="width: 100px" id="cantidadEditar" value="#{vistaFactura.facturaDetalleSeleccionado.cantidad}"/>
+                    <h:outputLabel style="width: 100px;" for="stock" value="Stock:" />
+                    <h:inputText style="width:100px" id="stock" value="#{vistaFactura.facturaDetalleSeleccionado.getMuebleModelo().getStockDisponible()}" readonly="true" disabled="true" />
+                </h:panelGroup>
+                <p:commandButton styleClass="botonesBottom" value="Aceptar" oncomplete="dialogoEditar.hide();" update="tablaDestino" onclick="return validarEditarDetalleStock()"/>
+            </h:form>
+        </p:dialog>
+        
+    </ui:define>
+</ui:composition>
+

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+      parent="transitions">
+    <attribute name="needsNewSession" value="true"/>
+    <persistence-context/>
+    <input name="uid"/>
+    <input name="useCaseMode" type="ar.edu.utn.sigmaproject.controller.UseCaseMode" required="true"/>
+    <on-start>
+        <evaluate expression="woodController.prepareEntityRender(uid,useCaseMode)"/>
+    </on-start>
+    <view-state id="view">
+        <on-entry>
+            <evaluate expression="woodController.populateNonEntityPropertiesToModel()"/>
+        </on-entry>
+        <transition on="confirm" to="confirm">
+            <evaluate expression="woodController.confirmSave(messageContext, externalContext.locale)"/>
+        </transition>
+        <transition on="cancel" to="cancel"/>
+        <transition on="newWoodType" to="viewWoodType">
+            <set name="flashScope.uid" value="''"/>
+            <set name="flashScope.useCaseMode" value="'NEW'" type="ar.edu.utn.sigmaproject.controller.UseCaseMode"/>
+        </transition>
+        <transition on="editWoodType" to="viewWoodType">
+            <evaluate expression="woodController.prepareEditWoodType()"/>
+            <set name="flashScope.uid" value="woodModel.woodType.uid"/>
+            <set name="flashScope.useCaseMode" value="'EDIT'" type="ar.edu.utn.sigmaproject.controller.UseCaseMode"/>
+        </transition>
+    </view-state>
+    <end-state id="confirm" commit="true">
+        <output name="resultUid" value="woodModel.editedEntity.uid" type="java.lang.String"/>
+    </end-state>
+    <end-state id="cancel"/>
+    <subflow-state id="viewWoodType" subflow="woodType/view">
+        <input name="uid" value="uid"/>
+        <input name="useCaseMode" value="useCaseMode" type="ar.edu.utn.sigmaproject.controller.UseCaseMode" required="true"/>
+        <output name="resultUid"/>
+        <transition on="confirm" to="view">
+            <evaluate expression="woodController.setResultWoodTypeWithUid(resultUid)"/>
+        </transition>
+        <transition on="cancel" to="view"/>
+    </subflow-state>
+</flow>
+

@@ -1,0 +1,87 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="seleccionNavegable" default="false" />
+    </composite:interface>
+
+    <composite:implementation>
+        <c:if test="#{cc.attrs.seleccionNavegable == true}">
+            <p:dataTable id="listadoArticulos"
+                         var="fila"
+                         value="#{vistaArticulo.devolverArticulos()}"
+                         onRowSelectUpdate="panelScript"
+                         onRowSelectComplete="location=paginaSiguiente"
+                         selectionMode="single"
+                         selection="#{vistaArticulo.articuloSeleccionado}"
+                         paginator="true"
+                         dynamic="true"
+                         lazy="false"
+                         rows="5"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos"
+                         loadingMessage="Cargando..."
+                         >
+                <p:column filterBy="#{fila.tipo}" sortBy="#{fila.tipo}">
+                    <f:facet name="header">
+                        Tipo
+                    </f:facet>
+                    #{fila.tipo}
+                </p:column>
+                <p:column filterBy="#{fila.nombre}" filterMatchMode="contains" sortBy="#{fila.nombre}">
+                    <f:facet name="header">
+                        Nombre
+                    </f:facet>
+                    #{fila.nombre}
+                </p:column>
+            </p:dataTable>
+            <h:panelGroup id="panelScript">
+                <script type="text/javascript">
+                    var paginaSiguiente='#{request.contextPath}/stock/Articulos/#{vistaArticulo.articuloSeleccionado.tipo.toLowerCase()}/mostrarDatos#{vistaArticulo.articuloSeleccionado.tipo}.xhtml';
+                </script>
+                <h:outputText escape="false" />
+            </h:panelGroup>
+        </c:if>
+        <c:if test="#{cc.attrs.seleccionNavegable == false}">
+            <p:dataTable id="listadoArticulos"
+                         var="fila"
+                         value="#{vistaArticulo.devolverArticulos()}"
+                         paginator="true"
+                         dynamic="true"
+                         lazy="false"
+                         rows="5"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos"
+                         loadingMessage="Cargando..."
+                         >
+                <p:column filterBy="#{fila.tipo}" sortBy="#{fila.tipo}">
+                    <f:facet name="header">
+                        Tipo
+                    </f:facet>
+                    #{fila.tipo}
+                </p:column>
+                <p:column filterBy="#{fila.nombre}" filterMatchMode="contains" sortBy="#{fila.nombre}">
+                    <f:facet name="header">
+                        Nombre
+                    </f:facet>
+                    #{fila.nombre}
+                </p:column>
+            </p:dataTable>
+        </c:if>
+    </composite:implementation>
+</html>

@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="titulo_ventana">Proveedor</ui:define>
+    <ui:define name="titulo_pagina">Datos de Proveedor</ui:define>
+    <ui:define name="pagina">
+        <p>A continuación, se muestran los datos del Proveedor seleccionado.<br/></p>
+        <h:form prependId="false">
+            <componentes:datosProveedores groupbox="true" proveedor="#{generico.proveedorSeleccionado}" editable="false"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Consultar Artículos" action="/compras/Proveedores/Articulos/consultarArticulos?faces-redirect=true"/>
+                <c:if test="#{generico.proveedorSeleccionado.habilitado}">
+                <p:commandButton  value="Dar de Baja" onclick="confirmation.show()"/>
+                </c:if>
+                <c:if test="#{not generico.proveedorSeleccionado.habilitado}">
+                <p:commandButton  value="Habilitar Proveedor" onclick="confirmation2.show()"/>
+                </c:if>
+                <p:commandButton ajax="false" value="Actualizar Datos" action="/compras/Proveedores/ABM/actualizarDatosProveedor?faces-redirect=true"/>
+                <p:commandButton ajax="false" value="Volver" action="verListado?faces-redirect=true"/>
+
+            </div>
+            <p:confirmDialog modal ="true"  message="¿Desea dar de baja este proveedor?"
+                             showEffect="bounce" hideEffect="explode"
+                             header="Dar de baja proveedor " severity="alert" widgetVar="confirmation">
+                 <p:commandButton value="Cancelar" onclick="confirmation.hide()" type="button" />
+                 <p:commandButton value="Aceptar" update="messages" oncomplete="confirmation.hide()" action="#{generico.inhabilitarProveedor}"/>
+                   
+            </p:confirmDialog>
+             <p:confirmDialog modal ="true"  message="¿Desea habilitar este proveedor?"
+                             showEffect="bounce" hideEffect="explode"
+                             header="Habilitar Proveedor " severity="alert" widgetVar="confirmation2">
+                 <p:commandButton value="Cancelar" onclick="confirmation2.hide()" type="button" />
+                 <p:commandButton value="Aceptar" update="messages" oncomplete="confirmation.hide()" action="#{generico.habilitarProveedor}"/>
+            </p:confirmDialog>
+        </h:form>
+        <componentes:dialogoDirecciones editable="false" />
+        <componentes:dialogoTelefonos editable="false" />
+    </ui:define>
+</ui:composition>
+
+

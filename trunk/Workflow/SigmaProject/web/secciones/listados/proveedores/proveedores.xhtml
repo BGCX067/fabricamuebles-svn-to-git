@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="titulo_ventana">Listado de Proveedores</ui:define>
+    <ui:define name="titulo_pagina">Listado de Proveedores</ui:define>
+    <ui:define name="cuerpo">
+        <p:dataTable var="fila" value="#{vistaProveedor.devolverProveedores()}}" paginator="true" rowsPerPageTemplate="25,50,100" lazy="true">
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="id" />
+                </f:facet>
+                <h:outputText value="#{fila.toString}"></h:outputText>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>
+

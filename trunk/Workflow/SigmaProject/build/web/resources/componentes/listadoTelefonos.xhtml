@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="entidad" required="true" type="entidades.Entidad"/>
+        <composite:attribute name="telefonos" required="true" />
+        <composite:attribute name="editable" default="false" />
+        <composite:attribute name="panel" default="true" />
+    </composite:interface>
+
+    <composite:implementation>
+        <p:panel id="panelListadoTelefonos" collapsed="true" toggleable="true" header="" style="margin-left: 12em;">
+            <p:dataTable var="fila" value="#{cc.attrs.telefonos}" paginatorAlwaysVisible="false" paginator="true" rows="10"
+                         id="listadoTelefonos"
+                         binding="#{vistaNombreComponente.listadoTelefonos}"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos"
+                         loadingMessage="Cargando...">
+                <p:column resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Tipo" />
+                    </f:facet>
+                    <h:outputText value="#{fila.tipo}"/>
+                </p:column>
+                <p:column resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Número" />
+                    </f:facet>
+                    <h:outputText value="#{fila.numero}"/>
+                </p:column>
+                <p:column resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>
+                    <c:if test="#{cc.attrs.editable == true}">
+                        <p:commandButton value="Editar" action="#{vistaTelefono.setTelefonoSeleccionado(fila)}" process="@this" update="#{vistaNombreComponente.panelTelefono.clientId}" oncomplete="dialogoTelefono.show();"/>
+                        <p:commandButton value="Quitar" action="#{vistaTelefono.quitarTelefono(fila)}" process="@this" oncomplete="location.reload(true);" />
+
+                    </c:if>
+                    <c:if test="#{cc.attrs.editable == false}">
+                        <p:commandButton value="Ver" action="#{vistaTelefono.setTelefonoSeleccionado(fila)}" process="@this" update="#{vistaNombreComponente.panelTelefono.clientId}" oncomplete="dialogoTelefono.show();"/>
+                    </c:if>
+                </p:column>
+            </p:dataTable>
+            <c:if test="#{cc.attrs.editable == true}">
+                <p:commandButton value="Agregar" id="botonAgregar" action="#{vistaTelefono.crearNuevoTelefono(cc.attrs.entidad)}" update="#{vistaNombreComponente.panelTelefono.clientId}" process="@this" oncomplete="dialogoTelefono.show();" style="margin-top: 0.4em; margin-left: 40em;"/>
+            </c:if>
+        </p:panel>
+    </composite:implementation>
+
+</html>

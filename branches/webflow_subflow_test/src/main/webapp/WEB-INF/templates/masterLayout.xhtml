@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags">
+<h:head>
+	<title><ui:insert name="title">
+                #{msgs.placesWindowTitle}
+            </ui:insert></title>
+	<h:outputStylesheet name="style.css" library="css" />
+	<!--link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/themes/primefaces-cupertino/theme.css" /-->
+	<h:outputScript name="centrado.js" library="javascript" />
+	<h:outputScript name="redondeado.js" library="javascript" />
+</h:head>
+
+<h:body onload="alComienzo();">
+	<div>
+		<div id="encabezado">
+			<div id="logo">
+				<p:commandLink action="main">
+					<h:graphicImage library="images" name="logo.gif" alt="logo"
+						width="220px" height="83px" style="border: none;" />
+				</p:commandLink>
+			</div>
+			<div id="menu" style="margin-bottom: 1em;">
+				<h:form style="width: 100% !important; max-width: 100%;">
+					<ui:include src="menu.xhtml"/>
+				</h:form>
+			</div>
+			<div id="sesion">
+				Bienvenido
+				<h:outputText id="username"
+					value="#{facesContext.externalContext.userPrincipal.name}" />
+				<p:commandLink action="logout" value="(Cerrar
+					Sesión)"/>
+			</div>
+		</div>
+		<div id="titulo" class="bordes-redondeados"
+			style="margin-bottom: 1em;">
+			<div id="titulo_texto">
+				<ui:insert name="body_title">
+
+				</ui:insert>
+			</div>
+		</div>
+		<div id="pagina">
+            <p:messages autoUpdate="true" globalOnly="true"/>
+			<ui:insert name="body">
+
+			</ui:insert>
+			<p:ajaxStatus styleClass="ajaxLoading">
+				<f:facet name="start">
+					<h:graphicImage library="images" name="ajaxloading.gif" />
+				</f:facet>
+
+				<f:facet name="complete">
+					<h:outputText value="" />
+				</f:facet>
+			</p:ajaxStatus>
+		</div>
+	</div>
+</h:body>
+</html>
+

@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Asignacion de Capacidad Maxima de Produccion de Tipos de Muebles por Fabrica</ui:define>
+    <ui:define name="titulo_pagina">Asignacion de Capacidad Maxima de Produccion de Tipos de Muebles por Fabrica</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false">
+            <p:dialog width="600" widgetVar="listaMuebles" modal="true" closeOnEscape="true" visible="false" draggable="false" resizable="false" header="Lista de Muebles" >
+                <p:dataTable
+                    var="fila"
+                    value="#{vistaMuebleTipo.devolverMueblesTipo()}"
+                    onRowSelectComplete="listaMuebles.hide(); dialogoPedirCantidad.show();"
+                    onRowSelectUpdate="panelAgregar"
+                    selectionMode="single"
+                    selection="#{vistaFabrica.muebleTipoSeleccionado}"
+                    paginator="true"
+                    dynamic="true"
+                    lazy="true"
+                    rows="5"
+                    nextPageLinkLabel="Siguiente >"
+                    lastPageLinkLabel="Último >>"
+                    previousPageLinkLabel="&lt; Anterior"
+                    firstPageLinkLabel="&lt;&lt; Primero"
+                    emptyMessage="No hay registros cargados"
+                    errorMessage="Hubo un error cargando los datos"
+                    loadingMessage="Cargando..."
+                    >
+                    <p:column filterBy="#{fila.nombre}" filterMatchMode="contains" sortBy="#{fila.nombre}">
+                        <f:facet name="header">
+                            Tipo de Mueble
+                        </f:facet>
+                        #{fila.nombre}
+                    </p:column>
+                    <p:column filterBy="#{fila.descripcion}" filterMatchMode="contains" sortBy="#{fila.descripcion}">
+                        <f:facet name="header">
+                            Descripcion
+                        </f:facet>
+                        #{fila.descripcion}
+                    </p:column>
+                    
+                </p:dataTable>
+            </p:dialog>
+            <p>Por favor, seleccione los tipos de mueble para asignar a la fabrica:</p>
+            <p:dataTable
+                var="fila"
+                value="#{vistaFabrica.fabricaSeleccionada.muebleTipoCapacidadesMaximas}"
+                paginator="true"
+                rows="5"
+                dynamic="true"
+                lazy="true"
+                nextPageLinkLabel="Siguiente >"
+                lastPageLinkLabel="Último >>"
+                previousPageLinkLabel="&lt; Anterior"
+                firstPageLinkLabel="&lt;&lt; Primero"
+                emptyMessage="No hay registros cargados"
+                errorMessage="Hubo un error cargando los datos"
+                loadingMessage="Cargando..."
+                id="tablaDestino"
+                >
+                <p:column>
+                    <f:facet name="header">
+                        Capacidad Maxima
+                    </f:facet>
+                    #{fila.capacidadMaxima}
+                </p:column>
+                <p:column filterBy="#{fila.muebleTipo.nombre}" filterMatchMode="contains" sortBy="#{fila.muebleTipo.nombre}">
+                    <f:facet name="header">
+                        Nombre
+                    </f:facet>
+                    #{fila.muebleTipo.nombre}
+                </p:column>
+                
+                <p:column>
+                    <f:facet name="header">
+                        Acción
+                    </f:facet>
+                    <p:commandButton value="Editar" action="#{vistaFabrica.seleccionFabricaMuebleTipoCapacidadMaxima(fila)}" update="panelEditar" onsuccess="dialogoEditar.show()"/>
+                    <p:commandButton value="Quitar" ajax="false" action="#{vistaFabrica.quitarFabricaMuebleTipoCapacidadMaxima(fila)}"/>
+                </p:column>
+            </p:dataTable>
+            <h:outputText styleClass="error" value="#{vistaFabrica.error}"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" action="mostrarDatosCliente?faces-redirect=true"/>
+                <p:commandButton value="Agregar Tipo Mueble" action="#{vistaFabrica.accionAgregar()}" onclick="listaMuebles.show();" update="panelAgregar"/>
+                <p:commandButton ajax="false" value="Siguiente" action="#{vistaFabrica.siguienteSeleccionarMueblesTipo()}"/>
+            </div>
+        </h:form>
+        <h:outputScript library="javascript" name="validacion.js" />
+        <p:dialog modal="true" header="Ingrese la cantidad" width="300" widgetVar="dialogoPedirCantidad" visible="false" draggable="false" resizable="false" closeOnEscape="true">
+            <h:form prependId="false" id="formAgregar">
+                <h:panelGroup id="panelAgregar">
+                    <h:outputLabel style="width: 100px;" for="cantidadAgregar" value="Cantidad:" />
+                    <h:inputText style="width:100px" id="cantidadAgregar" value="#{vistaFabrica.cantidadMaxima}"/>
+                    
+                </h:panelGroup>
+                <p:commandButton styleClass="botonesBottom" value="Aceptar" action="#{vistaFabrica.agregarFabricaMuebleTipoCapacidadMaxima()}" oncomplete="dialogoPedirCantidad.hide();" update="tablaDestino" onclick="return validarCantidadAgregar()"/>
+            </h:form>
+        </p:dialog>
+        <p:dialog modal="true" header="Editar el detalle" width="300" widgetVar="dialogoEditar" visible="false" draggable="false" resizable="false" closeOnEscape="true">
+            <h:form prependId="false" id="formEditar">
+                <h:panelGroup id="panelEditar">
+                    <h:outputLabel style="width: 100px;" for="cantidadEditar" value="Cantidad:" />
+                    <h:inputText style="width: 100px" id="cantidadEditar" value="#{vistaFabrica.fabricaMuebleTipoCapacidadMaximaSeleccionada.capacidadMaxima}"/>
+                    
+                </h:panelGroup>
+                <p:commandButton styleClass="botonesBottom" value="Aceptar" oncomplete="dialogoEditar.hide();" update="tablaDestino" onclick="return validarEditarDetalle()"/>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

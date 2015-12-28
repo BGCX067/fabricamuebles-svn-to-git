@@ -1,0 +1,109 @@
+@charset "utf-8";
+/* CSS Document */
+
+#encabezado {
+    position: relative;
+}
+#logo {
+    top: 0px;
+    left: 0px;
+    display: table-cell;
+}
+#logo form {  /* set width in form, not fieldset (still takes up more room w/ fieldset width */
+    font:100% Lucida Grande,Lucida Sans,Arial,sans-serif;
+    margin: 0;
+    padding: 0;
+    min-width: 220px;
+    max-width: 950px;
+    width: 220px;
+}
+#sesion {
+    top: 0px;
+    right: 0px;
+    position: absolute;
+}
+#titulo {
+    background-color: #336699;
+    height: 50px;
+    position: relative;
+}
+
+#titulo_texto {
+    top: 14px;
+    position: relative;
+    color: #FFFFFF;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:21px;
+    text-align: center;
+}
+
+#username {
+	font-weight: bold;
+}
+
+#menu {
+    font-size: 15px;
+    margin-top: 10px;
+    display: table-cell;
+}
+
+#menu a{
+    text-decoration: none;
+}
+
+body
+{
+    /*text-align: center;*/
+    font-size: small !important;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+
+.center {
+    margin-left:auto; margin-right:auto;
+}
+
+div#pagina
+{
+    margin-left: 0;
+    margin-right: auto;
+    width: 1100px;
+    text-align: left;
+}
+#cuerpo {
+    margin-top: 10px;
+}
+.bordes-redondeados {
+    -moz-border-radius: 10px;
+}
+.titulo_panel {
+}
+.contenido_panel {
+}
+
+.ui-panelgrid, .new-button {
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.search-section {
+    display: table;
+}
+
+.search-section .search-button {
+    margin-top: 14px;
+    margin-left: 20px;
+}
+
+.no-border-panelgrid tr td {
+    border-style: hidden;
+}
+
+.first-column-panelgrid {
+    float: right;
+    border-style: hidden;
+}
+
+.ui-message-info, .ui-message-error, .ui-message-warn, .ui-message-fatal {
+    display: inline-block;
+}

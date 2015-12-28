@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Registrar Orden de Compra</ui:define>
+    <ui:define name="titulo_pagina">Registrar Orden de Compra</ui:define>
+    <ui:define name="pagina">
+        <style type="text/css">
+            .ui-notificationbar {
+                color:#000 !important;
+                height: auto !important;
+            }
+            .bottom {
+                background-color: #ddd;
+                padding:2em 0 2em 2em;
+                margin-left: 0;
+                margin-right: 0;
+                left: 0;
+                right: 0;
+            }
+        </style>
+        <h:form prependId="false">
+            <p>Por favor, seleccione a un proveedor:</p>
+            <h:panelGroup id="panelTablaProveedores">
+                <p:dataTable var="fila"
+                             dynamic="false"
+                             value="#{vistaArticuloProveedor.devolverProveedoresArticulo(vistaOrdenDeProduccion.requerimientoMaterialSeleccionado.itemRequerible)}"
+                             selection="#{VistaRegistrarOrdenDeCompra.proveedorSeleccionado}"
+                             onRowSelectComplete="location='mostrarDatosProveedor.xhtml'"
+                             onRowSelectUpdate="@none"
+                             paginator="true"
+                             rows="10"
+                             selectionMode="single"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos">
+                    <p:column sortBy="#{fila.nombre}" filterBy="#{fila.nombre}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Razón Social" />
+                        </f:facet>
+                        <h:outputText value="#{fila.nombre}" />
+                    </p:column>
+                    <p:column filterBy="#{fila.nroCUIT}">
+                        <f:facet name="header">
+                            <h:outputText value="CUIT" />
+                        </f:facet>
+                        <h:outputText value="#{fila.nroCUIT}" />
+                    </p:column>
+                </p:dataTable>
+            </h:panelGroup>
+            <h:outputText styleClass="error" value="#{VistaRegistrarOrdenDeCompra.error}"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" action="seleccionarOrdenDeProduccionPlanificada?faces-redirect=true" />
+            </div>
+            <p:commandButton value="Mostrar Requerimientos de Material" onclick="bottomBar.show(); return false;" style="position: absolute; bottom: 2em; right: 2em;"/>
+        </h:form>
+        <p:notificationBar id="notificationBar" position="bottom" effect="fade" widgetVar="bottomBar" styleClass="bottom" autoDisplay="true">
+            <f:facet name="close">
+                <h:graphicImage library="images" name="closebar.png"/>
+            </f:facet>
+            <h:form prependId="false">
+                <p>Seleccione un Requerimiento Material para que se listen los Proveedores que provean el mismo.</p>
+                <p>Requerimientos de Materiales:</p>
+                <p:dataTable value="#{vistaOrdenDeProduccion.ordenDeProduccionSeleccionada.requerimientoMateriales}"
+                             var="requerimientoMaterial"
+                             paginator="true"
+                             rows="5"
+                             selection="#{vistaOrdenDeProduccion.requerimientoMaterialSeleccionado}"
+                             selectionMode="single"
+                             onRowSelectUpdate="panelTablaProveedores"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando...">
+                    <p:column>
+                        <f:facet name="header">
+                            Tipo
+                        </f:facet>
+                        #{requerimientoMaterial.itemRequerible.tipo}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Nombre
+                        </f:facet>
+                        #{requerimientoMaterial.itemRequerible.nombre}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Cant. Requerida
+                        </f:facet>
+                        #{requerimientoMaterial.cantidadRequerida}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Cant. en Tránsito
+                        </f:facet>
+                        #{requerimientoMaterial.cantidadPedida}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Cant. A Pedir
+                        </f:facet>
+                        #{requerimientoMaterial.cantidadAPedir()}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Cant. Reservada
+                        </f:facet>
+                        #{requerimientoMaterial.cantidadReservada}
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p:notificationBar>
+    </ui:define>
+</ui:composition>
+
+

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+    parent="transitions">
+	<secured attributes="ROLE_ADM_USER"/>
+    <persistence-context/>
+    <on-start>
+        <evaluate expression="userController.init()"></evaluate>
+    </on-start>
+    <view-state id="search" model="userModel">
+        <on-entry>
+            <evaluate expression="userController.search()"/>
+        </on-entry>
+        <transition on="search">
+            <evaluate expression="userController.search()"/>
+        </transition>
+        <transition on="delete" to="confirm">
+            <evaluate expression="userController.delete()"/>
+        </transition>
+        <transition on="edit" to="view">
+            <set name="flashScope.uid" value="userModel.editedEntity.uid"/>
+            <set name="flashScope.useCaseMode" value="'EDIT'"/>
+        </transition>
+        <transition on="new" to="view">
+            <set name="flashScope.uid" value="''"/>
+            <set name="flashScope.useCaseMode" value="'NEW'"/>
+        </transition>
+        <transition on="consult" to="view">
+            <set name="flashScope.uid" value="editedEntity.uid"/>
+            <set name="flashScope.useCaseMode" value="'CONSULT'"/>
+        </transition>
+        <transition on="prepareResetPassword">
+            <evaluate expression="userController.prepareResetPassword()" />
+        </transition>
+        <transition on="confirmResetPassword">
+            <evaluate expression="userController.confirmResetPassword()" />
+        </transition>
+    </view-state>
+    <subflow-state id="view" subflow="administration/users/view">
+        <input name="uid" value="uid"/>
+        <input name="useCaseMode" value="useCaseMode" required="true"/>
+        <output name="resultUid"/>
+        <transition on="confirm" to="confirm"/>
+        <transition on="cancel" to="cancel"/>
+    </subflow-state>
+    <end-state id="cancel"/>
+    <end-state id="confirm" commit="true"/>
+</flow>

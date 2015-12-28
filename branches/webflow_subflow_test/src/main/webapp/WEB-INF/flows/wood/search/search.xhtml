@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/masterLayout.xhtml">
+
+	<ui:define name="title">#{resourceBundle['wood.search.title']}</ui:define>
+	<ui:define name="body_title">#{resourceBundle['wood.search.title']}</ui:define>
+
+	<ui:define name="body">
+		<h:form id="searchWoodForm">
+			<h:panelGrid columns="5" width="60%">
+                <h:outputText value="#{resourceBundle['wood.woodType']}:" />
+                <p:selectOneMenu id="woodType" value="#{woodModel.filter.woodType}" converter="#{woodController}">
+                    <f:selectItem value="#{null}" itemLabel="#{resourceBundle['all']}"/>
+                    <f:selectItems value="#{woodModel.woodTypeList}" var="woodType" itemLabel="#{woodType.name}"/>
+                </p:selectOneMenu>
+                <p:message for="woodType" />
+				<p:commandButton value="#{resourceBundle['search']}" action="search"
+					update="woodListTable" />
+				<p:commandButton value="#{resourceBundle['new']}" action="new" />
+			</h:panelGrid>
+
+			<br />
+
+			<p:dataTable id="woodListTable" var="wood" value="#{woodModel.list}"
+				paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15"
+				emptyMessage="#{resourceBundle['search.message.dataNotFound']}"
+				paginatorAlwaysVisible="false">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{resourceBundle['name']}" />
+					</f:facet>
+					<h:outputText value="#{wood.name}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{resourceBundle['description']}" />
+					</f:facet>
+					<h:outputText value="#{wood.description}" />
+				</p:column>
+				<p:column>
+					<p:commandLink action="edit" title="#{resourceBundle['edit']}">
+						<h:graphicImage value="/resources/images/edit.gif" />
+						<f:setPropertyActionListener target="#{woodModel.editedEntity}"
+							value="#{wood}" />
+					</p:commandLink>
+					<p:commandLink process="@this" update="@none"
+						oncomplete="confirmation.show()"
+						title="#{resourceBundle['delete']}">
+						<h:graphicImage value="/resources/images/delete.gif" />
+						<f:setPropertyActionListener target="#{woodModel.editedEntity}"
+							value="#{wood}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+
+			<p:confirmDialog id="confirmDialog"
+				message="#{resourceBundle['wood.delete.confirm']}"
+				header="#{resourceBundle['confirm']}" severity="alert"
+				widgetVar="confirmation">
+
+				<p:commandButton id="confirm" value="#{resourceBundle['delete']}"
+					oncomplete="confirmation.hide()" action="delete"
+					update="woodListTable" />
+				<p:commandButton id="decline" value="#{resourceBundle['cancel']}"
+					onclick="confirmation.hide()" type="button" />
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

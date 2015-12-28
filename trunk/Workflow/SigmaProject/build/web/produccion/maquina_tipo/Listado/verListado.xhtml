@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Listado de Tipos de Máquina</ui:define>
+    <ui:define name="titulo_pagina">Listado de Tipos de Máquina</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false" id="listado">
+            <componentes:listadoMaquinasTipo seleccionNavegable="true" objetoSeleccion="#{vistaMaquinaTipo.maquinaTipoSeleccionada}" paginaSiguiente="mostrarDatosMaquinaTipo.xhtml"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" action="/index?faces-redirect=true"/>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

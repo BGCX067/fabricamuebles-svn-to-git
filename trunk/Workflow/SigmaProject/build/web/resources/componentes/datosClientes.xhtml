@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="cliente" required="true" default="null" type="entidades.Cliente"/>
+        <composite:attribute name="editable" required="false" default="false"/>
+        <composite:attribute name="groupbox" required="false" default="true"/>
+        <composite:attribute name="mostrarNombre" required="false" default="true"/>
+        <composite:attribute name="mostrarCuit" required="false" default="true"/>
+        <composite:attribute name="mostrarDireccion" required="false" default="true"/>
+        <composite:attribute name="mostrarTelefono" required="false" default="true"/>
+        
+        <composite:attribute name="mostrarEmail" required="false" default="true"/>
+        <composite:attribute name="mostrarObservaciones" required="false" default="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <c:if test="#{cc.attrs.groupbox}">
+            <p:fieldset legend="Cliente" >
+                <c:if test="#{cc.attrs.mostrarNombre}">
+                    <label for="nombre">Nombre:</label>
+                    <h:inputText id="nombre" value="#{cc.attrs.cliente.nombre}" readonly="#{!cc.attrs.editable}" /><br/>
+                </c:if>
+                <c:if test="#{cc.attrs.mostrarCuit}">
+                    <label for="nroDNI">Nº DNI:</label>
+                    <h:inputText id="nroDNI" value="#{cc.attrs.cliente.dni}" readonly="#{!cc.attrs.editable}" /><br/>
+                </c:if>
+                <c:if test="#{cc.attrs.mostrarDireccion}">
+                    <label>Direcciones:</label>
+                    <componentes:listadoDirecciones entidad="#{cc.attrs.cliente}" direcciones="#{cc.attrs.cliente.direcciones}" editable="#{cc.attrs.editable}" />
+                </c:if>
+                <c:if test="#{cc.attrs.mostrarTelefono}">
+                    <label>Teléfonos:</label>
+                    <componentes:listadoTelefonos entidad="#{cc.attrs.cliente}" telefonos="#{cc.attrs.cliente.telefonos}" editable="#{cc.attrs.editable}" />
+                </c:if>
+                
+                <c:if test="#{cc.attrs.mostrarEmail}">
+                    <label for="email">E-Mail:</label>
+                    <h:inputText id="email" value="#{cc.attrs.cliente.email}" readonly="#{!cc.attrs.editable}" /><p:message for="email"/><br/>
+                </c:if>
+                <c:if test="#{cc.attrs.mostrarObservaciones}">
+                    <label for="observaciones">Observaciones:</label>
+                    <h:inputTextarea id="observaciones" value="#{cc.attrs.cliente.observaciones}" readonly="#{!cc.attrs.editable}" /><br/>
+                </c:if>
+            </p:fieldset>
+        </c:if>
+        <c:if test="#{!cc.attrs.groupbox}">
+            <c:if test="#{cc.attrs.mostrarNombre}">
+                <label for="nombre">Nombre:</label>
+                <h:inputText id="nombre" value="#{cc.attrs.cliente.nombre}" readonly="#{!cc.attrs.editable}" /><br/>
+            </c:if>
+            <c:if test="#{cc.attrs.mostrarDNI}">
+                <label for="nroDNI">Nº DNI:</label>
+                <h:inputText id="nroDNI" value="#{cc.attrs.cliente.dni}" readonly="#{!cc.attrs.editable}" /><br/>
+            </c:if>
+            <c:if test="#{cc.attrs.mostrarDireccion}">
+                <label for="direccion">Dirección:</label>
+                <componentes:listadoDirecciones entidad="#{cc.attrs.cliente}" direcciones="#{cc.attrs.cliente.direcciones}" editable="#{cc.attrs.editable}" />
+            </c:if>
+            <c:if test="#{cc.attrs.mostrarTelefono}">
+                <label>Teléfonos:</label>
+                <componentes:listadoTelefonos entidad="#{cc.attrs.cliente}" telefonos="#{cc.attrs.cliente.telefonos}" editable="#{cc.attrs.editable}" />
+            </c:if>
+            
+            <c:if test="#{cc.attrs.mostrarEmail}">
+                <label for="email">E-Mail:</label>
+                <h:inputText id="email" value="#{cc.attrs.cliente.email}" readonly="#{!cc.attrs.editable}" /><p:message for="email"/><br/>
+            </c:if>
+            <c:if test="#{cc.attrs.mostrarObservaciones}">
+                <label for="observaciones">Observaciones:</label>
+                <h:inputTextarea id="observaciones" value="#{cc.attrs.cliente.observaciones}" readonly="#{!cc.attrs.editable}" /><br/>
+            </c:if>
+        </c:if>
+    </composite:implementation>
+
+</html>
+

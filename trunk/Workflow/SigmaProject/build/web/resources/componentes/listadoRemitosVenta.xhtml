@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="cliente" default="#{null}"/>
+        <composite:attribute name="filtrarPorCliente" default="false" />
+        <composite:attribute name="listarSoloAFacturar" default="false" />
+        <composite:attribute name="objetoSeleccion" default="#{null}" />
+    </composite:interface>
+
+    <composite:implementation>
+       
+            <c:if test="#{cc.attrs.filtrarPorCliente == true}">
+                <p:dataTable var="fila" value="#{vistaRemito.devolverRemitosVenta(cc.attrs.cliente)}" selection="#{vistaFactura.remitosSeleccionados}" paginator="true" rows="10"
+                             selectionMode="multiple"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando...">
+                    <p:column sortBy="#{fila.numero}" filterBy="#{fila.numero}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Número" />
+                        </f:facet>
+                        #{fila.numero}
+                    </p:column>
+                    <p:column sortBy="#{fila.fechaEmision}" filterBy="#{fila.fechaEmision}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha de Emisión" />
+                        </f:facet>
+                        <h:outputText value="#{fila.fechaEmision}" >
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{fila.entidad.nombre}" filterBy="#{fila.entidad.nombre}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Entidad" />
+                        </f:facet>
+                        <h:outputText value="#{fila.entidad.nombre}" />
+                    </p:column>
+                    <p:column sortBy="#{fila.estado}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Estado" />
+                        </f:facet>
+                        <h:outputText value="#{fila.estado}" />
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+            <c:if test="#{cc.attrs.filtrarPorCliente == false}">
+                <p:dataTable var="fila" value="#{vistaRemito.devolverRemitosVenta()}" selection="#{cc.attrs.objetoSeleccion}" paginator="true" rows="10"
+                             selectionMode="single"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando...">
+                    <p:column sortBy="#{fila.numero}" filterBy="#{fila.numero}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Número" />
+                        </f:facet>
+                        #{fila.numero}
+                    </p:column>
+                    <p:column sortBy="#{fila.fechaEmision}" filterBy="#{fila.fechaEmision}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha de Emisión" />
+                        </f:facet>
+                        <h:outputText value="#{fila.fechaEmision}" >
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{fila.entidad.nombre}" filterBy="#{fila.entidad.nombre}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Entidad" />
+                        </f:facet>
+                        <h:outputText value="#{fila.entidad.nombre}" />
+                    </p:column>
+                    <p:column sortBy="#{fila.estado}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Estado" />
+                        </f:facet>
+                        <h:outputText value="#{fila.estado}" />
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+        
+        <c:if test="#{cc.attrs.listarSoloAFacturar == true}">
+            <c:if test="#{cc.attrs.filtrarPorCliente == true}">
+                <p:dataTable var="fila" value="#{vistaRemito.devolverRemitosVentaAFacturar(cc.attrs.cliente)}" selection="#{vistaFactura.remitosSeleccionados}" paginator="true" rows="10"
+                             selectionMode="multiple"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando...">
+                    <p:column sortBy="#{fila.numero}" filterBy="#{fila.numero}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Número" />
+                        </f:facet>
+                        #{fila.numero}
+                    </p:column>
+                    <p:column sortBy="#{fila.fechaEmision}" filterBy="#{fila.fechaEmision}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha de Emisión" />
+                        </f:facet>
+                        <h:outputText value="#{fila.fechaEmision}" >
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{fila.entidad.nombre}" filterBy="#{fila.entidad.nombre}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Entidad" />
+                        </f:facet>
+                        <h:outputText value="#{fila.entidad.nombre}" />
+                    </p:column>
+                    <p:column sortBy="#{fila.estado}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Estado" />
+                        </f:facet>
+                        <h:outputText value="#{fila.estado}" />
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+            <c:if test="#{cc.attrs.filtrarPorCliente == false}">
+                <p:dataTable var="fila" value="#{vistaRemito.devolverRemitosVentaAFacturar()}" selection="#{cc.attrs.objetoSeleccion}" paginator="true" rows="10"
+                             selectionMode="single"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando...">
+                    <p:column sortBy="#{fila.numero}" filterBy="#{fila.numero}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Número" />
+                        </f:facet>
+                        #{fila.numero}
+                    </p:column>
+                    <p:column sortBy="#{fila.fechaEmision}" filterBy="#{fila.fechaEmision}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha de Emisión" />
+                        </f:facet>
+                        <h:outputText value="#{fila.fechaEmision}" >
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{fila.entidad.nombre}" filterBy="#{fila.entidad.nombre}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Entidad" />
+                        </f:facet>
+                        <h:outputText value="#{fila.entidad.nombre}" />
+                    </p:column>
+                    <p:column sortBy="#{fila.estado}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Estado" />
+                        </f:facet>
+                        <h:outputText value="#{fila.estado}" />
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+        </c:if>
+    </composite:implementation>
+
+</html>

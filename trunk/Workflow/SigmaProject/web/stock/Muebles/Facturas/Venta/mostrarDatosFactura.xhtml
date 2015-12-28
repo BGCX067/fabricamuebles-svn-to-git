@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Registrar Remito de Ventas</ui:define>
+    <ui:define name="titulo_pagina">Registrar Remito de Ventas</ui:define>
+    <ui:define name="pagina">
+        <p>A continuación, se muestran los datos de la Factura de Venta seleccionada.<br/></p>
+        <h:form prependId="false">
+            <componentes:datosFacturaVenta factura="#{vistaRemito.facturaSeleccionada}" editable="false"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" action="verListado?faces-redirect=true"/>
+                <p:commandButton value="Confirmar Entrega de Productos" action="#{vistaRemito.remitoAPartirDeFactura()}" onsuccess="dialogoIngresoNumeroRemito.show();"/>
+            </div>
+        </h:form>
+        <p:dialog widgetVar="dialogoIngresoNumeroRemito" resizable="false" modal="true">
+            <h:form prependId="false" style="min-width: 250px;; width: 270px;">
+                <p>Ingrese el número de Remito a asignar:</p>
+                <h:outputLabel for="numero">Número:</h:outputLabel>
+                <h:inputText required="true" value="#{vistaRemito.remitoNoConfirmado.numero}" style="width: 8em;"/>
+                <h:panelGroup styleClass="botonesBottom">
+                    <p:commandButton value="Aceptar" action="#{vistaRemito.confirmarRemito()}" onsuccess="dialogoIngresoNumeroRemito.hide(); location = '#{request.contextPath}/stock/Muebles/nuevo/informarRegistroEntregaMuebles.xhtml?faces-redirect=true'"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+
+

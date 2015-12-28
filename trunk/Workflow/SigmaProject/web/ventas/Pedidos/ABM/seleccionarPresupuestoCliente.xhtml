@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Registrar Pedido</ui:define>
+    <ui:define name="titulo_pagina">Registrar Pedido</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false">
+            <p>Por favor, seleccione un Presupuesto:</p>
+            <componentes:listadoPresupuestos objetoSeleccion="#{vistaPresupuesto.presupuestoSeleccionado}" cliente="#{vistaCliente.clienteSeleccionado}" listarSoloNoUsados="true" filtrarPorCliente="true" seleccion="true" />
+            <h:outputText value="#{vistaPedido.error}" styleClass="error" />
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" action="mostrarDatosProveedor?faces-redirect=true" />
+                <p:commandButton value="Siguiente" action="#{vistaPedido.abrirPedidoAPartirDePresupuesto(vistaPresupuesto.presupuestoSeleccionado)}" update="@none" onsuccess="location='seleccionarMuebles.xhtml'" />
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

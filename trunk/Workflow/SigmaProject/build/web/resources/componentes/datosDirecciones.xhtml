@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="direccion" required="true" default="#{null}" type="entidades.Direccion"/>
+        <composite:attribute name="editable" required="false" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <c:if test="#{cc.attrs.editable}">
+            <h:outputLabel id="labelTipo" for="tipo">Tipo:</h:outputLabel>
+            <h:selectOneMenu id="tipo" value="#{vistaDireccion.tipoSeleccionado}">
+                <f:selectItems value="#{vistaDireccion.devolverTipos()}" />
+            </h:selectOneMenu><br/>
+            <h:outputLabel id="labelProvincia" for="provincia">Provincia:</h:outputLabel>
+            <h:selectOneMenu styleClass="combosUbicaciones" id="provincia" value="#{vistaDireccion.provinciaSeleccionada}">
+                <p:ajax update="departamento localidad panelAgregarProvincia" event="change"/>
+                <f:selectItem itemLabel="Seleccione una Provincia..." itemValue="seleccion" noSelectionOption="true"/>
+                <f:selectItem itemLabel="Agregar una Provincia..." itemValue="agregar"/>
+                <f:selectItems value="#{vistaDireccion.devolverProvincias()}" />
+            </h:selectOneMenu>
+            <p:panel id="panelAgregarProvincia" visible="#{vistaDireccion.agregarProvincia()}">
+                <h:outputLabel for="inputAgregarProvincia" value="Provincia:" />
+                <h:inputText id="inputAgregarProvincia" value="#{vistaDireccion.provinciaNueva}" rendered="#{vistaDireccion.agregarProvincia()}" style="margin-left: 2em;" />
+                <p:commandButton id="botonAgregarProvincia" process="@this inputAgregarProvincia" update="panelAgregarProvincia provincia" value="Agregar" rendered="#{vistaDireccion.agregarProvincia()}" style="margin-left: 2em;"/>
+            </p:panel><br/>
+            <h:outputLabel id="labelDepartamento" for="departamento">Departamento:</h:outputLabel>
+            <h:selectOneMenu styleClass="combosUbicaciones" id="departamento" value="#{vistaDireccion.departamentoSeleccionado}">
+                <p:ajax update="localidad panelAgregarDepartamento" event="change"/>
+                <f:selectItem itemLabel="Seleccione un Departamento..." itemValue="seleccion" noSelectionOption="true"/>
+                <f:selectItem itemLabel="Agregar un Departamento..." itemValue="agregar"/>
+                <f:selectItems value="#{vistaDireccion.devolverDepartamentos()}" />
+            </h:selectOneMenu>
+            <p:panel id="panelAgregarDepartamento" visible="#{vistaDireccion.agregarDepartamento()}">
+                <h:outputLabel for="inputAgregarDepartamento" value="Departamento:" />
+                <h:inputText id="inputAgregarDepartamento" value="#{vistaDireccion.departamentoNuevo}" rendered="#{vistaDireccion.agregarDepartamento()}" style="margin-left: 2em;" />
+                <p:commandButton id="botonAgregarDepartamento" process="@this inputAgregarDepartamento" update="panelAgregarDepartamento departamento" value="Agregar" rendered="#{vistaDireccion.agregarDepartamento()}" style="margin-left: 2em;"/>
+            </p:panel><br/>
+            <h:outputLabel id="labelLocalidad" for="localidad">Localidad:</h:outputLabel>
+            <h:selectOneMenu styleClass="combosUbicaciones" id="localidad" value="#{vistaDireccion.localidadSeleccionada}">
+                <p:ajax update="panelAgregarLocalidad" event="change"/>
+                <f:selectItem itemLabel="Seleccione una Localidad..." itemValue="seleccion" noSelectionOption="true"/>
+                <f:selectItem itemLabel="Agregar una Localidad..." itemValue="agregar"/>
+                <f:selectItems value="#{vistaDireccion.devolverLocalidades()}" />
+            </h:selectOneMenu>
+            <p:panel id="panelAgregarLocalidad" visible="#{vistaDireccion.agregarLocalidad()}">
+                <h:outputLabel for="inputAgregarLocalidad" value="Localidad:" />
+                <h:inputText id="inputAgregarLocalidad" value="#{vistaDireccion.localidadNueva}" rendered="#{vistaDireccion.agregarLocalidad()}" style="margin-left: 2em;"/>
+                <p:commandButton id="botonAgregarLocalidad" process="@this inputAgregarLocalidad" update="panelAgregarLocalidad localidad" value="Agregar" rendered="#{vistaDireccion.agregarLocalidad()}" style="margin-left: 2em;"/>
+            </p:panel><br/>
+        </c:if>
+        <c:if test="#{cc.attrs.editable == false}">
+            <h:outputLabel id="labelTipo2" for="tipo2">Tipo:</h:outputLabel>
+            <h:inputText id="tipo2" value="#{vistaDireccion.tipoSeleccionado}" readonly="true"/><br/>
+            <h:outputLabel id="labelProvincia2" for="provincia2">Provincia:</h:outputLabel>
+            <h:inputText id="provincia2" value="#{vistaDireccion.nombreProvincia}" readonly="true"/><br/>
+            <h:outputLabel id="labelDepartamento2" for="departamento2">Departamento:</h:outputLabel>
+            <h:inputText id="departamento2" value="#{vistaDireccion.nombreDepartamento}" readonly="true"/><br/>
+            <h:outputLabel id="labelLocalidad2" for="localidad2">Localidad:</h:outputLabel>
+            <h:inputText id="localidad2" value="#{vistaDireccion.nombreLocalidad}" readonly="true"/><br/>
+        </c:if>
+        <h:outputLabel id="labelCalle" for="calle">Calle:</h:outputLabel>
+        <h:inputText id="calle" value="#{vistaDireccion.calle}" readonly="#{!cc.attrs.editable}"/><br/>
+        <h:outputLabel id="labelNumero" for="numero">Nº:</h:outputLabel>
+        <h:inputText id="numero" value="#{vistaDireccion.numero}" styleClass="camposCortos" readonly="#{!cc.attrs.editable}">
+            <f:convertNumber />
+        </h:inputText><br/>
+        <h:outputLabel id="labelPiso" for="piso">Piso:</h:outputLabel>
+        <h:inputText id="piso" value="#{vistaDireccion.piso}" styleClass="camposCortos" readonly="#{!cc.attrs.editable}">
+            <f:convertNumber />
+        </h:inputText><br/>
+        <h:outputLabel id="labelDpto" for="dpto">Dpto.:</h:outputLabel>
+        <h:inputText id="dpto" value="#{vistaDireccion.dpto}" styleClass="camposCortos" readonly="#{!cc.attrs.editable}"/><br/>
+    </composite:implementation>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/masterLayout.xhtml">
+
+	<ui:define name="title">#{resourceBundle['woodType.admin.title']}</ui:define>
+	<ui:define name="body_title">#{resourceBundle['woodType.admin.title']}</ui:define>
+
+	<ui:define name="body">
+        <style type="text/css">
+            .tableWidth {width: 706px;}
+            td{white-space:nowrap;}
+        </style>
+		<h:form id="editWoodTypeForm" prependId="false">
+            <h:panelGroup layout="block" styleClass="tableWidth">
+                <p:panelGrid styleClass="no-border-panelgrid tableWidth">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{resourceBundle['name']}:" for="name"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText value="#{woodTypeModel.name}" id="name" label="#{resourceBundle['name']}" size="60"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="name" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <h:panelGroup layout="block" style="float: right;">
+                    <p:commandButton value="#{resourceBundle['accept']}" update="@form"
+                        action="confirm"/>
+                    <p:commandButton value="#{resourceBundle['cancel']}"
+                        action="cancel" immediate="true"/>
+                </h:panelGroup>
+            </h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,10 @@
+con respecto a las validaciones: se tiene que verificar que en el caso de modificar la capacidad maxima de una fabrica se tenga en cuenta si esta esta realizando una produccion, que el nuevo valor no sea menor al que se encuentra en produccion actual.
+
+La clase articulo tiene que tener una unidad de compra una de produccion y una cantidad de unidad de produccion por unidad de compra. Ademas la clase articulo podra tener multiples presentaciones cada una con una cantidad de unidad de compra. La cantidad de unidad de compra por unidad de produccion es calculable. El precio de articulo por proveedor ademas de tener en cuenta el articulo debera tener en cuenta la presentacion del mismo.
+
+Cuando se definen los requerimientos de materiales primero se selecciona el articulo sin tener en cuenta la presentacion y luego el sistema le muestra a el usuario la unidad de produccion usada sin posibilidad de cambiarla y solicita la cantidad.
+
+Con respecto a las actividades deben estar descriptas de tal forma que reflejen cuales son sus entradas y salidas y estas actividades se podran elegir al momento de definir una nueva estructura, ademas las actividades seran globales
+Para cada renglon de entrada y para cada renglon de salida se le asigna una cantidad
+Para cada actividad se elige el producto intermedio requerido y ese producto intermedio puede ser uno ya definido globalmente
+

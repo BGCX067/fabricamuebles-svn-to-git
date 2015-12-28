@@ -1,0 +1,23 @@
+<h:form id="stateForm"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:h="http://java.sun.com/jsf/html">
+    <p:panelGrid id="stateGrid" styleClass="no-border-panelgrid">
+        <p:row>
+            <p:column>
+                <p:outputLabel value="#{resourceBundle['address.admin.state']}" for="stateName"/>
+            </p:column>
+            <p:column>
+                <h:inputText id="stateName" value="#{addressModel.stateName}"/>
+            </p:column>
+        </p:row>
+    </p:panelGrid>
+    <p:commandButton value="#{resourceBundle['accept']}"
+                     action="confirm"
+                     oncomplete="stateDialog.hide()"/>
+
+    <p:commandButton value="#{resourceBundle['cancel']}"
+                     action="cancel"
+                     process="@this"
+                     oncomplete="stateDialog.hide()"/>
+</h:form>

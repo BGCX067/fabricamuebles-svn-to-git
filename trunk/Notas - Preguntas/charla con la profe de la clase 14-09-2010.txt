@@ -1,0 +1,22 @@
+Posibilidad de registrar una factura de compra a partir de uno o más remitos.
+Primero se selecciona el proveedor, y despues todo en una misma pagina, se le de la posibilidad
+al usuario de seleccionar varios remitos, o de elegir una opcion de compra directa (sin remitos). LISTO
+
+En la parte de stock minimo, cuando pide la cantidad, tendría que autopoblar una cantidad sugerida, haciendo stockReposicion - stockActual. Informar esto al usuario en el pedido de cantidad. EN REALIDAD NO SERÍA LO QUE FALTA PARA LLEGAR A UN STOCK "OPTIMO" (NO ESTA ESE ATRIBUTO PLANTEADO, LO AGREGO???)
+
+Parte de Stock
+Habría que registrar remitos a partir de una o mas ordenes de compra, y actualizar
+la cantidadAbastecida si la orden de compra fuera a partir de una planificacion de produccion.
+Obviamente, actualizar stockActual del articulo. LISTO
+Aca va la parte donde se dan de alta los articulos, ya sea maderas, o insumos. LISTO
+Alta de tipos de madera LISTO
+
+salidas a fabricas externas (remitos) LISTO, y salida de muebles (puede ser con remito o no, y ver cuando hay q actualizar el stock, porque puede ser factura sin remito) LISTO
+En ambas falta preveer que el usuario no pueda agregar detalles sin el stockActual es menor al que el usuario quiere ingresar. Si es cero, el articulo no debería aparecer en la lista directamente...
+
+miercoles a la mañana, de 8-11hs, aula 1
+aula 232, 8-13hs
+
+documentacion:
+todos los casos de uso escenciales
+trazo grueso de los cu de soporte

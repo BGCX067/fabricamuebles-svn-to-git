@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="vista" required="true" />
+        <composite:attribute name="seleccion" required="false" default="false"/>
+        <composite:attribute name="objetoSeleccion" required="false" default="null" type="entidades.OrdenDeCompra"/>
+        <composite:attribute name="seleccionNavegable" required="false" default="false"/>
+        <composite:attribute name="proveedor" default="#{null}"/>
+        <composite:attribute name="listarSoloNoRecibidos" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <c:if test="#{cc.attrs.listarSoloNoRecibidos == false}">
+            <c:if test="#{cc.attrs.seleccion}">
+                <p:dataTable var="fila" value="#{cc.attrs.vista.devolverOrdenesDeCompra()}" selection="#{cc.attrs.objetoSeleccion}" paginator="true" rows="10" selectionMode="single"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando...">
+                    <p:column sortBy="#{fila.numero}" filterBy="#{fila.numero}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Número" />
+                        </f:facet>
+                        #{fila.numero}
+                    </p:column>
+                    <p:column sortBy="#{fila.fechaCreacion}" filterBy="#{fila.fechaCreacion}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha de Creación" />
+                        </f:facet>
+                        <h:outputText value="#{fila.fechaCreacion}" >
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{fila.proveedor.nombre}" filterBy="#{fila.proveedor.nombre}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Proveedor" />
+                        </f:facet>
+                        <h:outputText value="#{fila.proveedor.nombre}" />
+                    </p:column>
+                    <p:column filterBy="#{fila.estado}">
+                        <f:facet name="header">
+                            <h:outputText value="Estado" />
+                        </f:facet>
+                        <h:outputText value="#{fila.estado}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Importe" />
+                        </f:facet>
+                        <h:outputText value="#{fila.importeTotal}" >
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+            <c:if test="#{cc.attrs.seleccionNavegable}">
+                <p:dataTable var="fila"
+                             value="#{cc.attrs.vista.devolverOrdenesDeCompra()}"
+                             rowSelectListener="#{cc.attrs.vista.seleccionOrdenDeCompra}"
+                             selection="#{cc.attrs.objetoSeleccion}"
+                             paginator="true"
+                             rows="10"
+                             selectionMode="single"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando...">
+                    <p:column sortBy="#{fila.numero}" filterBy="#{fila.numero}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Número" />
+                        </f:facet>
+                        #{fila.numero}
+                    </p:column>
+                    <p:column sortBy="#{fila.fechaCreacion}" filterBy="#{fila.fechaCreacion}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha de Creación" />
+                        </f:facet>
+                        <h:outputText value="#{fila.fechaCreacion}" >
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{fila.proveedor.nombre}" filterBy="#{fila.proveedor.nombre}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Proveedor" />
+                        </f:facet>
+                        <h:outputText value="#{fila.proveedor.nombre}" />
+                    </p:column>
+                    <p:column filterBy="#{fila.estado}">
+                        <f:facet name="header">
+                            <h:outputText value="Estado" />
+                        </f:facet>
+                        <h:outputText value="#{fila.estado}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Importe" />
+                        </f:facet>
+                        <h:outputText value="#{fila.importeTotal}" >
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+            <c:if test="#{cc.attrs.seleccion == false and cc.attrs.seleccionNavegable == false}">
+                <p:dataTable var="fila" value="#{cc.attrs.vista.devolverOrdenesDeCompra()}" paginator="true" rows="10"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando...">
+                    <p:column sortBy="#{fila.numero}" filterBy="#{fila.numero}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Número" />
+                        </f:facet>
+                        #{fila.numero}
+                    </p:column>
+                    <p:column sortBy="#{fila.fechaCreacion}" filterBy="#{fila.fechaCreacion}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha de Creación" />
+                        </f:facet>
+                        <h:outputText value="#{fila.fechaCreacion}" >
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{fila.proveedor.nombre}" filterBy="#{fila.proveedor.nombre}" resizable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Proveedor" />
+                        </f:facet>
+                        <h:outputText value="#{fila.proveedor.nombre}" />
+                    </p:column>
+                    <p:column filterBy="#{fila.estado}">
+                        <f:facet name="header">
+                            <h:outputText value="Estado" />
+                        </f:facet>
+                        <h:outputText value="#{fila.estado}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Importe" />
+                        </f:facet>
+                        <h:outputText value="#{fila.importeTotal}" >
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+        </c:if>
+        <c:if test="#{cc.attrs.listarSoloNoRecibidos == true}">
+            <p:dataTable var="fila" value="#{cc.attrs.vista.devolverOrdenesDeCompraNoCompletas(cc.attrs.proveedor)}" selection="#{vistaRemito.ordenesDeCompraSeleccionadas}" paginator="true" rows="10" selectionMode="multiple"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos"
+                         loadingMessage="Cargando...">
+                <p:column sortBy="#{fila.numero}" filterBy="#{fila.numero}" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Número" />
+                    </f:facet>
+                    #{fila.numero}
+                </p:column>
+                <p:column sortBy="#{fila.fechaCreacion}" filterBy="#{fila.fechaCreacion}" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Fecha de Creación" />
+                    </f:facet>
+                    <h:outputText value="#{fila.fechaCreacion}" >
+                        <f:convertDateTime type="date" />
+                    </h:outputText>
+                </p:column>
+                <p:column sortBy="#{fila.proveedor.nombre}" filterBy="#{fila.proveedor.nombre}" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Proveedor" />
+                    </f:facet>
+                    <h:outputText value="#{fila.proveedor.nombre}" />
+                </p:column>
+                <p:column filterBy="#{fila.estado}">
+                    <f:facet name="header">
+                        <h:outputText value="Estado" />
+                    </f:facet>
+                    <h:outputText value="#{fila.estado}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Importe" />
+                    </f:facet>
+                    <h:outputText value="#{fila.importeTotal}" >
+                        <f:convertNumber type="currency" currencySymbol="$" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </c:if>
+    </composite:implementation>
+
+</html>

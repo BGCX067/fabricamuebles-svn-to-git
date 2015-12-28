@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="seleccionNavegable" default="false" />
+        <composite:attribute name="paginaSiguiente" />
+        <composite:attribute name="objetoSeleccion" default="#{vistaMuebleModelo.muebleModeloSeleccionado}" />
+        <composite:attribute name="filtrarSoloSinEstructura" default="false" />
+        <composite:attribute name="filtrarSoloConEstructura" default="false" />
+    </composite:interface>
+
+    <composite:implementation>
+        <c:if test="#{cc.attrs.seleccionNavegable == true}">
+            <c:if test="#{cc.attrs.filtrarSoloSinEstructura == false and cc.attrs.filtrarSoloConEstructura == false}">
+                <p:dataTable id="listadoMueblesModelos"
+                             var="fila"
+                             value="#{vistaMuebleModelo.devolverMueblesModelo()}"
+                             onRowSelectUpdate="@none"
+                             onRowSelectComplete="location='#{cc.attrs.paginaSiguiente}'"
+                             selectionMode="single"
+                             selection="#{cc.attrs.objetoSeleccion}"
+                             paginator="true"
+                             dynamic="true"
+                             lazy="true"
+                             rows="5"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando..."
+                             >
+
+                    <p:column filterBy="#{fila.nombre}" filterMatchMode="contains" sortBy="#{fila.nombre}">
+                        <f:facet name="header">
+                            Nombre
+                        </f:facet>
+                        #{fila.nombre}
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+            <c:if test="#{cc.attrs.filtrarSoloSinEstructura == true}">
+                <p:dataTable id="listadoMueblesModelos"
+                             var="fila"
+                             value="#{vistaMuebleModelo.devolverMueblesModeloSinEstructura()}"
+                             onRowSelectUpdate="@none"
+                             onRowSelectComplete="location='#{cc.attrs.paginaSiguiente}'"
+                             selectionMode="single"
+                             selection="#{cc.attrs.objetoSeleccion}"
+                             paginator="true"
+                             dynamic="true"
+                             lazy="true"
+                             rows="5"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando..."
+                             >
+
+                    <p:column filterBy="#{fila.nombre}" filterMatchMode="contains" sortBy="#{fila.nombre}">
+                        <f:facet name="header">
+                            Nombre
+                        </f:facet>
+                        #{fila.nombre}
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+            <c:if test="#{cc.attrs.filtrarSoloConEstructura == true}">
+                <p:dataTable id="listadoMueblesModelos"
+                             var="fila"
+                             value="#{vistaMuebleModelo.devolverMueblesModeloConEstructura()}"
+                             onRowSelectUpdate="@none"
+                             onRowSelectComplete="location='#{cc.attrs.paginaSiguiente}'"
+                             selectionMode="single"
+                             selection="#{cc.attrs.objetoSeleccion}"
+                             paginator="true"
+                             dynamic="true"
+                             lazy="true"
+                             rows="5"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando..."
+                             >
+
+                    <p:column filterBy="#{fila.nombre}" filterMatchMode="contains" sortBy="#{fila.nombre}">
+                        <f:facet name="header">
+                            Nombre
+                        </f:facet>
+                        #{fila.nombre}
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+        </c:if>
+        <c:if test="#{cc.attrs.seleccionNavegable == false}">
+            <p:dataTable id="listadoArticulos"
+                         var="fila"
+                         value="#{vistaArticulo.devolverArticulos()}"
+                         paginator="true"
+                         dynamic="true"
+                         lazy="true"
+                         rows="5"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos"
+                         loadingMessage="Cargando..."
+                         >
+                <p:column filterBy="#{fila.tipo}" sortBy="#{fila.tipo}">
+                    <f:facet name="header">
+                        Tipo
+                    </f:facet>
+                    #{fila.tipo}
+                </p:column>
+                <p:column filterBy="#{fila.nombre}" filterMatchMode="contains" sortBy="#{fila.nombre}">
+                    <f:facet name="header">
+                        Nombre
+                    </f:facet>
+                    #{fila.nombre}
+                </p:column>
+            </p:dataTable>
+        </c:if>
+    </composite:implementation>
+</html>

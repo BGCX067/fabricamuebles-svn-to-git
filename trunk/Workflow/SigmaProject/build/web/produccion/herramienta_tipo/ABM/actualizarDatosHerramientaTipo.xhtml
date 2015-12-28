@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Actualizar Tipo de Herramienta</ui:define>
+    <ui:define name="titulo_pagina">Actualizar Tipo de Herramienta</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false">
+            <p>A continuación se muestran los datos del Tipo de Herramienta para su modificación:</p>
+            <componentes:datosHerramientaTipo herramientaTipo="#{vistaHerramientaTipo.herramientaTipoSeleccionada}" editable="true"/>
+            <p:messages id="mensajes" showDetail="true" showSummary="true"/>
+            <div class="botonesBottom">
+                <p:commandButton value="Volver" immediate="true" action="#{vistaHerramientaTipo.descartarCambiosHerramienta(vistaHerramientaTipo.herramientaTipoSeleccionada)}"/>
+                <p:commandButton value="Actualizar datos" action="#{vistaHerramientaTipo.actualizarHerramientaTipo(vistaHerramientaTipo.herramientaTipoSeleccionada)}" onsuccess="location='#{request.contextPath}/produccion/herramienta_tipo/Listado/mostrarDatosHerramientaTipo.xhtml'" />
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+

@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Registrar Remito de Abastecimiento Externo</ui:define>
+    <ui:define name="titulo_pagina">Registrar Remito de Abastecimiento Externo</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false" style="width: 950px;">
+            <p>Por favor, seleccione una Orden de Producción Planificada Externa:</p>
+            <componentes:listadoOrdenesDeProduccion externa="true" objetoSeleccionSimple="#{vistaRemito.ordenDeProduccionSeleccionada}"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" immediate="true" action="/index?faces-redirect=true"/>
+                <p:commandButton ajax="false" value="Siguiente" action="#{vistaRemito.remitoAPartirDeOrdenDeProduccion()}"/>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

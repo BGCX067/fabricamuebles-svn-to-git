@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="remito" required="true" type="entidades.Remito"/>
+        <composite:attribute name="editable" default="false" />
+    </composite:interface>
+
+    <composite:implementation>
+        <p:fieldset legend="Remito">
+            <h:outputLabel for="numero">Número:</h:outputLabel>
+            <h:inputText id="numero" value="#{cc.attrs.remito.numero}" readonly="#{!cc.attrs.editable}"/><br/>
+            <componentes:datosFabricas fabrica="#{cc.attrs.remito.entidad}" editable="false" groupbox="false"
+                                          mostrarDireccion="false" mostrarEmail="false" mostrarObservaciones="false"
+                                          mostrarTelefono="false"/>
+            <h:outputLabel for="fecha">Fecha:</h:outputLabel>
+            <p:calendar pattern="dd/MM/yyyy" locale="es" disabled="#{!cc.attrs.editable}" mode="popup" id="fecha" value="#{cc.attrs.remito.fechaEmision}"/>
+        </p:fieldset>
+        <br/>
+        <p:dataTable
+            var="fila"
+            value="#{cc.attrs.remito.detalles}"
+            nextPageLinkLabel="Siguiente >"
+            lastPageLinkLabel="Último >>"
+            previousPageLinkLabel="&lt; Anterior"
+            firstPageLinkLabel="&lt;&lt; Primero"
+            emptyMessage="No hay registros cargados"
+            errorMessage="Hubo un error cargando los datos"
+            loadingMessage="Cargando...">
+            <p:column>
+                <f:facet name="header">
+                    Nombre
+                </f:facet>
+                #{fila.articulo.nombre}
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    Cantidad
+                </f:facet>
+                #{fila.cantidad}
+            </p:column>
+        </p:dataTable>
+    </composite:implementation>
+
+</html>

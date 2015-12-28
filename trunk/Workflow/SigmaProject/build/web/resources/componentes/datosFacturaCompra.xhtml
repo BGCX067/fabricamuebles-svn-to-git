@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="factura" required="true" type="entidades.Factura" />
+        <composite:attribute name="editable" required="false" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <h:outputLabel for="numero">Número:</h:outputLabel>
+        <h:inputText id="numero" value="#{cc.attrs.factura.numero}" readonly="#{!cc.attrs.editable}"/><br/>
+        <componentes:datosProveedores proveedor="#{cc.attrs.factura.entidad}"/><br/>
+        <p:dataTable
+            var="fila"
+            value="#{cc.attrs.factura.detalles}"
+            >
+            <p:column>
+                <f:facet name="header">
+                    Nombre
+                </f:facet>
+                #{fila.articulo.nombre}
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    Importe Unitario
+                </f:facet>
+                <h:outputText value="#{fila.precio}">
+                    <f:convertNumber type="currency" currencySymbol="$" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    Cantidad
+                </f:facet>
+                #{fila.cantidad}
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    Subtotal
+                </f:facet>
+                <h:outputText style="text-align: right;" value="#{fila.calcularSubTotal()}">
+                    <f:convertNumber type="currency" currencySymbol="$" />
+                </h:outputText>
+            </p:column>
+        </p:dataTable><br/>
+        Total: <h:outputText value="#{cc.attrs.factura.importeTotal}">
+            <f:convertNumber type="currency" currencySymbol="$" />
+        </h:outputText>
+    </composite:implementation>
+
+</html>

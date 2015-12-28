@@ -1,0 +1,148 @@
+<p:menubar autoDisplay="true"
+           xmlns:p="http://primefaces.org/ui"
+           xmlns:sec="http://www.springframework.org/security/tags">
+	<sec:authorize
+			ifAnyGranted="ROLE_ADM_USER, ROLE_ADM_ROL, ROLE_ADM_PERM">
+		<p:submenu
+				label="#{resourceBundle['menu.submenu.administration']}">
+			<sec:authorize ifAllGranted="ROLE_ADM_ROL">
+				<p:menuitem value="#{resourceBundle['menu.submenu.roles']}"
+				            action="roles" />
+			</sec:authorize>
+			<sec:authorize ifAllGranted="ROLE_ADM_USER">
+				<p:menuitem value="#{resourceBundle['menu.submenu.users']}"
+				            action="users" />
+			</sec:authorize>
+		</p:submenu>
+	</sec:authorize>
+	<p:submenu label="Sesión">
+		<p:menuitem value="Cerrar Sesión" action="logout" />
+		<p:menuitem value="Cambiar Datos" />
+	</p:submenu>
+	<p:submenu label="#{resourceBundle['menu.submenu.purchase']}">
+		<p:submenu label="Ordenes de Compra">
+			<p:submenu label="Registrar Orden de Compra">
+				<p:menuitem
+						value="Abastecimiento de una Orden de Producción Planificada"
+						action="/compras/OrdenesDeCompra/ordendeproduccion/seleccionarOrdenDeProduccionPlanificada?faces-redirect=true" />
+				<p:menuitem value="Abastecimiento de Stock Mínimo"
+				            action="/compras/OrdenesDeCompra/stock_minimo/seleccionarProveedor?faces-redirect=true" />
+			</p:submenu>
+			<p:menuitem value="Listado de Ordenes de Compra"
+			            action="/compras/OrdenesDeCompra/listado/verListado?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="Facturas">
+			<p:menuitem value="Registrar Factura de Compra"
+			            action="/compras/Facturas/remito/seleccionarProveedor?faces-redirect=true" />
+			<p:menuitem value="Listado de Facturas de Compra"
+			            action="/compras/Facturas/listado/verListado?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="#{resourceBundle['menu.submenu.purchase.supplier']}">
+			<p:menuitem value="#{resourceBundle['menu.submenu.purchase.supplier']}"
+			            action="supplier" />
+			<p:menuitem value="Consultar Artículos de Proveedores"
+			            action="/compras/Proveedores/Articulos/verListado?faces-redirect=true" />
+		</p:submenu>
+	</p:submenu>
+	<p:submenu label="#{resourceBundle['menu.submenu.stock']}">
+		<p:submenu label="Remitos de Compra">
+			<p:menuitem value="Registrar Remito de Compra"
+			            action="/stock/Remitos/ordenDeCompra/seleccionarProveedor?faces-redirect=true" />
+			<p:menuitem value="Listado de Remitos de Compra"
+			            action="/stock/Remitos/listado/verListado?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="Remitos de Venta">
+			<p:menuitem value="Registrar Remito de Venta"
+			            action="/stock/Muebles/Facturas/Venta/verListado?faces-redirect=true" />
+			<p:menuitem value="Listado de Remitos de Venta"
+			            action="/stock/Remitos/listado/verListadoVenta?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="Remitos de Producción">
+			<p:menuitem value="Registrar Remito de Abastecimiento Externo"
+			            action="/stock/Remitos/ordendeproduccion/seleccionarOrdenDeProduccion?faces-redirect=true" />
+			<p:menuitem value="Listado de Remitos de Abastecimiento Externo"
+			            action="/stock/Remitos/ordendeproduccion/verListado?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="#{resourceBundle['menu.stock.materials']}">
+			<p:menuitem value="#{resourceBundle['menu.stock.materials.wood']}"
+			            action="wood" />
+			<p:menuitem value="Registrar Insumos"
+			            action="/stock/Articulos/insumo/nuevo?faces-redirect=true" />
+			<p:menuitem value="Listado de Artículos"
+			            action="/stock/Articulos/listado/verListado?faces-redirect=true" />
+			<p:menuitem value="#{resourceBundle['menu.stock.materials.woodType']}"
+			            action="woodType" />
+		</p:submenu>
+	</p:submenu>
+	<p:submenu label="Ventas">
+		<p:submenu label="Clientes">
+			<p:menuitem value="Registrar Cliente"
+			            action="/ventas/Clientes/ABM/nuevoCliente?faces-redirect=true" />
+			<p:menuitem value="Listado de Clientes"
+			            action="/ventas/Clientes/Listado/verListado?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="Presupuestos">
+			<p:menuitem value="Registrar Presupuesto"
+			            action="/ventas/Presupuestos/ABM/seleccionarCliente?faces-redirect=true" />
+			<p:menuitem value="Listado de Presupuestos"
+			            action="/ventas/Presupuestos/Listado/verListado?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="Pedidos">
+			<p:menuitem value="Registrar Pedido"
+			            action="/ventas/Pedidos/ABM/seleccionarCliente?faces-redirect=true" />
+			<p:menuitem value="Listado de Pedidos"
+			            action="/ventas/Pedidos/Listado/verListado?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="Facturas">
+			<p:menuitem value="Registrar Factura de Venta"
+			            action="/ventas/Facturas/ABM/seleccionarCliente?faces-redirect=true" />
+			<p:menuitem value="Listado de Facturas"
+			            action="/ventas/Facturas/Listado/verListado?faces-redirect=true" />
+		</p:submenu>
+	</p:submenu>
+	<p:submenu label="#{resourceBundle['menu.submenu.production']}">
+		<p:submenu label="Ordenes de Producción">
+			<p:menuitem value="Planificar Ordenes de Producción"
+			            action="/produccion/orden_produccion/planificacion?faces-redirect=true" />
+			<p:menuitem
+					value="Consulta de Planificaciones de Ordenes de Producción"
+					action="/produccion/orden_produccion/consultaPlanificacion?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="Fabricas">
+			<p:menuitem value="Registrar Fabrica"
+			            action="/produccion/ActividadesGenericas/ABM/nuevo?faces-redirect=true" />
+			<p:menuitem value="Listado de Fabricas"
+			            action="/produccion/fabricas/Listado/verListado?faces-redirect=true" />
+			<p:menuitem value="Asignar Tipos de Mueble a Fabrica"
+			            action="/produccion/fabricas/ABM/seleccionarFabrica.xhtml?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="Estructura de Productos">
+			<p:menuitem value="Registrar Estructura de Producto"
+			            action="/produccion/estructura_producto/ABM/seleccionarModeloMueble?faces-redirect=true" />
+			<p:menuitem value="Listado de Estructuras de Producto"
+			            action="/produccion/estructura_producto/Listado/verListado?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="#{resourceBundle['menu.submenu.production.machine']}">
+			<p:menuitem value="#{resourceBundle['menu.submenu.production.machine']}"
+						action="machine" />
+			<p:menuitem value="#{resourceBundle['menu.submenu.production.machineType']}"
+			            action="/produccion/maquina_tipo/ABM/nuevaMaquinaTipo?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="Herramientas">
+			<p:menuitem value="Registrar Herramienta"
+			            action="/produccion/herramienta/ABM/nuevaHerramienta?faces-redirect=true" />
+			<p:menuitem value="Listado de Herramientas"
+			            action="/produccion/herramienta/Listado/verListado?faces-redirect=true" />
+			<p:menuitem value="Registrar Tipo de Herramienta"
+			            action="/produccion/herramienta_tipo/ABM/nuevaHerramientaTipo?faces-redirect=true" />
+			<p:menuitem value="Listado de Tipos de Herramienta"
+			            action="/produccion/herramienta_tipo/Listado/verListado?faces-redirect=true" />
+		</p:submenu>
+		<p:submenu label="Actividades Genéricas">
+			<p:menuitem value="Registrar Actividad Genérica"
+			            action="/produccion/ActividadesGenericas/ABM/nuevo?faces-redirect=true" />
+			<p:menuitem value="Listado de Actividades Genéricas"
+			            action="/produccion/ActividadesGenericas/Listado/verListado?faces-redirect=true" />
+		</p:submenu>
+	</p:submenu>
+</p:menubar>

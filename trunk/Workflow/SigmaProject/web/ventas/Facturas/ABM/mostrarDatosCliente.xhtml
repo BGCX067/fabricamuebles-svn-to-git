@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="titulo_ventana">Registrar Venta</ui:define>
+    <ui:define name="titulo_pagina">Registrar Venta</ui:define>
+    <ui:define name="pagina">
+        <p>A continuación, se muestran los datos del Cliente seleccionado.<br/></p>
+        <h:form prependId="false">
+            <componentes:datosClientes  groupbox="true" cliente="#{vistaCliente.clienteSeleccionado}" editable="false"/>
+            <div class="botonesBottom">
+                 <p:commandButton ajax="false" value="Volver" action="seleccionarCliente?faces-redirect=true"/>
+                <p:commandButton ajax="false" value="Actualizar datos" action="actualizarDatosCliente?faces-redirect=true"/>
+                <p:commandButton value="Venta por Presupuesto" action="seleccionarPresupuestoCliente?faces-redirect=true"/>
+                <p:commandButton value="Venta por Pedido" action="seleccionarPedidoCliente?faces-redirect=true"/>
+                <p:commandButton value="Venta Directa" action="#{vistaFactura.abrirFactura(vistaCliente.clienteSeleccionado)}" onsuccess="location='seleccionarMuebles.xhtml'" />
+            </div>
+       </h:form>
+        <componentes:dialogoDirecciones editable="false" />
+        <componentes:dialogoTelefonos editable="false" />
+    </ui:define>
+</ui:composition>
+
+

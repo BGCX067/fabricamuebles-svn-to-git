@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="paginaSiguiente" />
+        <composite:attribute name="externa" default="false" shortDescription="Seteada en true si recibe items OrdenDeProduccion" />
+        <composite:attribute name="objetoSeleccionSimple" type="entidades.OrdenDeProduccion"/>
+        <composite:attribute name="seleccionNavegable" default="false" />
+    </composite:interface>
+
+    <composite:implementation>
+        <c:if test="#{cc.attrs.seleccionNavegable == true}">
+              <c:if test="#{cc.attrs.externa == false}">
+                <p:dataTable value="#{vistaOrdenDeProduccion.devolverOrdenesDeProduccion()}"
+                             var="ordenDeProduccion"
+                             onRowSelectComplete="location='#{cc.attrs.paginaSiguiente}'"
+                             onRowSelectUpdate="@none"
+                             selectionMode="single"
+                             selection="#{cc.attrs.objetoSeleccionSimple}"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando...">
+                    <p:column sortBy="#{ordenDeProduccion.tipo}">
+                        <f:facet name="header">
+                            Tipo
+                        </f:facet>
+                        #{ordenDeProduccion.tipo}
+                    </p:column>
+                    <p:column sortBy="#{ordenDeProduccion.fechaInicioEstimada}">
+                        <f:facet name="header">
+                            Fecha Inicio Estimada
+                        </f:facet>
+                        <h:outputText value="#{ordenDeProduccion.fechaInicioEstimada}">
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{ordenDeProduccion.fechaFinEstimada}">
+                        <f:facet name="header">
+                            Fecha Fin Estimada
+                        </f:facet>
+                        <h:outputText value="#{ordenDeProduccion.fechaFinEstimada}">
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{ordenDeProduccion.estado}">
+                        <f:facet name="header">
+                            Estado
+                        </f:facet>
+                        #{ordenDeProduccion.estado}
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+            <c:if test="#{cc.attrs.externa == true}">
+                <p:dataTable value="#{vistaOrdenDeProduccion.devolverOrdenesDeProduccionExterna}"
+                             var="ordenDeProduccion"
+                             onRowSelectComplete="location='#{cc.attrs.paginaSiguiente}'"
+                             onRowSelectUpdate="@none"
+                             selectionMode="single"
+                             selection="#{cc.attrs.objetoSeleccionSimple}"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando...">
+                    <p:column sortBy="#{ordenDeProduccion.fabrica.nombre}" filterBy="#{ordenDeProduccion.fabrica.nombre}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            Fábrica
+                        </f:facet>
+                        #{ordenDeProduccion.fabrica.nombre}
+                    </p:column>
+                    <p:column sortBy="#{ordenDeProduccion.fechaInicioEstimada}">
+                        <f:facet name="header">
+                            Fecha Inicio Estimada
+                        </f:facet>
+                        <h:outputText value="#{ordenDeProduccion.fechaInicioEstimada}">
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{ordenDeProduccion.fechaFinEstimada}">
+                        <f:facet name="header">
+                            Fecha Fin Estimada
+                        </f:facet>
+                        <h:outputText value="#{ordenDeProduccion.fechaFinEstimada}">
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{ordenDeProduccion.estado}">
+                        <f:facet name="header">
+                            Estado
+                        </f:facet>
+                        #{ordenDeProduccion.estado}
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+        </c:if>
+        <c:if test="#{cc.attrs.seleccionNavegable == false}">
+              <c:if test="#{cc.attrs.externa == false}">
+                <p:dataTable value="#{vistaOrdenDeProduccion.devolverOrdenesDeProduccion()}"
+                             var="ordenDeProduccion"
+                             selectionMode="single"
+                             selection="#{cc.attrs.objetoSeleccionSimple}"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando...">
+                    <p:column sortBy="#{ordenDeProduccion.tipo}">
+                        <f:facet name="header">
+                            Tipo
+                        </f:facet>
+                        #{ordenDeProduccion.tipo}
+                    </p:column>
+                    <p:column sortBy="#{ordenDeProduccion.fechaInicioEstimada}">
+                        <f:facet name="header">
+                            Fecha Inicio Estimada
+                        </f:facet>
+                        <h:outputText value="#{ordenDeProduccion.fechaInicioEstimada}">
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{ordenDeProduccion.fechaFinEstimada}">
+                        <f:facet name="header">
+                            Fecha Fin Estimada
+                        </f:facet>
+                        <h:outputText value="#{ordenDeProduccion.fechaFinEstimada}">
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{ordenDeProduccion.estado}">
+                        <f:facet name="header">
+                            Estado
+                        </f:facet>
+                        #{ordenDeProduccion.estado}
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+            <c:if test="#{cc.attrs.externa == true}">
+                <p:dataTable value="#{vistaOrdenDeProduccion.devolverOrdenesDeProduccionExterna()}"
+                             var="ordenDeProduccion"
+                             selectionMode="single"
+                             selection="#{cc.attrs.objetoSeleccionSimple}"
+                             nextPageLinkLabel="Siguiente >"
+                             lastPageLinkLabel="Último >>"
+                             previousPageLinkLabel="&lt; Anterior"
+                             firstPageLinkLabel="&lt;&lt; Primero"
+                             emptyMessage="No hay registros cargados"
+                             errorMessage="Hubo un error cargando los datos"
+                             loadingMessage="Cargando...">
+                    <p:column sortBy="#{ordenDeProduccion.fabrica.nombre}" filterBy="#{ordenDeProduccion.fabrica.nombre}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            Fábrica
+                        </f:facet>
+                        #{ordenDeProduccion.fabrica.nombre}
+                    </p:column>
+                    <p:column sortBy="#{ordenDeProduccion.fechaInicioEstimada}">
+                        <f:facet name="header">
+                            Fecha Inicio Estimada
+                        </f:facet>
+                        <h:outputText value="#{ordenDeProduccion.fechaInicioEstimada}">
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{ordenDeProduccion.fechaFinEstimada}">
+                        <f:facet name="header">
+                            Fecha Fin Estimada
+                        </f:facet>
+                        <h:outputText value="#{ordenDeProduccion.fechaFinEstimada}">
+                            <f:convertDateTime type="date" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{ordenDeProduccion.estado}">
+                        <f:facet name="header">
+                            Estado
+                        </f:facet>
+                        #{ordenDeProduccion.estado}
+                    </p:column>
+                </p:dataTable>
+            </c:if>
+        </c:if>
+    </composite:implementation>
+
+</html>

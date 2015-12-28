@@ -1,0 +1,15 @@
+presupuesto de compra.. no importa lo sacamos
+que todo inicie a partir de la orden de compra
+la orden de compra tendría quq surgir bajo la necesidad de stock bajo (y de producción)
+registrar la factura de compra para actualizar los precios
+
+en stock, se registra un remito, el cual actualiza el stock
+
+
+generar un plan de producción a partir de pedidos y de necesidad de stock minimo
+
+para un plan, se van generando ordenes de produccion que deben ser de un mismo tipo de producto
+para cada orden de prod, se pide a stock la materia prima necesaria, y recien ahí se actualiza
+el stock
+
+la disminución de productos terminados se realiza solo al entregar el producto al cliente (Registrar entrega)

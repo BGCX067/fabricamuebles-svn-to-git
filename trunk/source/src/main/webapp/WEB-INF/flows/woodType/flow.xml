@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+    <on-start>
+        <evaluate expression="woodTypeController.init()"/>
+    </on-start>
+    <view-state id="search" model="woodTypeModel">
+        <on-entry>
+            <evaluate expression="woodTypeController.search()"/>
+        </on-entry>
+        <transition on="search">
+            <evaluate expression="woodTypeController.search()"/>
+        </transition>
+        <transition on="delete">
+            <evaluate expression="woodTypeController.delete()"/>
+        </transition>
+        <transition on="edit" to="edit">
+            <evaluate expression="woodTypeController.prepareEdit()"/>
+        </transition>
+        <transition on="new" to="edit">
+            <evaluate expression="woodTypeController.prepareNew()"/>
+        </transition>
+    </view-state>
+    <view-state id="edit" model="woodTypeModel">
+        <transition on="confirm" to="search">
+            <evaluate expression="woodTypeController.confirmSave()"/>
+        </transition>
+        <transition on="cancel" to="search"/>
+    </view-state>
+</flow>
+

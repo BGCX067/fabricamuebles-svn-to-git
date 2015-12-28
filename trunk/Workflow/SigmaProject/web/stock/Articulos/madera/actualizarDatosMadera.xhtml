@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/masterLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Datos de Artículo</ui:define>
+    <ui:define name="titulo_pagina">Datos de Artículo</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false">
+            <componentes:datosMaderas madera="#{vistaArticulo.articuloSeleccionado}" editable="true" nuevo="false"/>
+            <div class="botonesBottom">
+                <p:commandButton value="Volver" action="#{vistaArticulo.descartarCambiosArticuloSeleccionado()}" onsuccess="location='mostrarDatosMadera.xhtml'" />
+                <p:commandButton value="Actualizar" action="#{vistaArticulo.clickBotonActualizar()}" update="accionActualizar"/>
+            </div>
+            <h:panelGroup id="accionActualizar">
+                <script type="text/javascript">
+                    #{vistaArticulo.accionActualizar()}
+                </script>
+            </h:panelGroup>
+        </h:form>
+        <p:dialog modal="true" width="700" widgetVar="dialogoAdvertencia" resizable="false">
+            <h:form style="width: 650px;">
+                <p>La madera seleccionada tiene uno o más proveedores asignados. Si las medidas han cambiado, se actualizará el precio de la madera para cada proveedor.<br/>
+                    ¿Está seguro de que desea actualizar los datos de la madera?</p>
+                <h:panelGroup styleClass="botonesBottom">
+                    <p:commandButton style="width: 5em;" value="Sí" action="#{vistaArticulo.actualizarArticuloSeleccionado()}" onsuccess="dialogoAdvertencia.hide(); location='mostrarDatosMadera.xhtml'"/>
+                    <p:commandButton style="width: 5em;" value="No" onsuccess="dialogoAdvertencia.hide()"/>
+                </h:panelGroup>                                 
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

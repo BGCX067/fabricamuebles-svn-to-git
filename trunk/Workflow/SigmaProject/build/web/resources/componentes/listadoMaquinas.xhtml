@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <composite:interface>
+        <composite:attribute name="seleccion" required="false" default="false"/>
+        <composite:attribute name="objetoSeleccion" default="#{null}" required="false" type="entidades.Maquina"/>
+        <composite:attribute name="seleccionNavegable" required="false" default="false"/>
+        <composite:attribute name="paginaSiguiente" />
+    </composite:interface>
+
+    <composite:implementation>
+        <c:if test="#{cc.attrs.seleccion}">
+            <p:dataTable var="fila"
+                         dynamic="false"
+                         value="#{vistaMaquina.devolverMaquinas()}"
+                         selection="#{cc.attrs.objetoSeleccion}"
+                         paginator="true"
+                         rows="10"
+                         selectionMode="single"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos">
+                <p:column sortBy="#{fila.nombre}" filterBy="#{fila.nombre}" filterMatchMode="contains" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Nombre" />
+                    </f:facet>
+                    <h:outputText value="#{fila.nombre}" />
+                </p:column>
+
+                <p:column filterBy="#{fila.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Descripcion" />
+                    </f:facet>
+                    <h:outputText value="#{fila.descripcion}" />
+                </p:column>
+
+            </p:dataTable>
+        </c:if>
+        <c:if test="#{cc.attrs.seleccionNavegable}">
+            <p:dataTable var="fila"
+                         dynamic="false"
+                         value="#{vistaMaquina.devolverMaquinas()}"
+                         selection="#{cc.attrs.objetoSeleccion}"
+                         onRowSelectComplete="location='#{cc.attrs.paginaSiguiente}'"
+                         onRowSelectUpdate="@none"
+                         paginator="true"
+                         rows="10"
+                         selectionMode="single"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos">
+                <p:column sortBy="#{fila.nombre}" filterBy="#{fila.nombre}" filterMatchMode="contains" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Nombre" />
+                    </f:facet>
+                    <h:outputText value="#{fila.nombre}" />
+                </p:column>
+                <p:column filterBy="#{fila.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Descripcion" />
+                    </f:facet>
+                    <h:outputText value="#{fila.descripcion}" />
+                </p:column>
+
+            </p:dataTable>
+        </c:if>
+        <c:if test="#{cc.attrs.seleccion == false and cc.attrs.seleccionNavegable == false}">
+            <p:dataTable var="fila"
+                         dynamic="false"
+                         value="#{cc.attrs.vista.devolverMaquinas()}"
+                         paginator="true"
+                         rows="10"
+                         nextPageLinkLabel="Siguiente >"
+                         lastPageLinkLabel="Último >>"
+                         previousPageLinkLabel="&lt; Anterior"
+                         firstPageLinkLabel="&lt;&lt; Primero"
+                         emptyMessage="No hay registros cargados"
+                         errorMessage="Hubo un error cargando los datos">
+                <p:column sortBy="#{fila.nombre}" filterBy="#{fila.nombre}" filterMatchMode="contains" resizable="true">
+                    <f:facet name="header">
+                        <h:outputText value="Nombre" />
+                    </f:facet>
+                    <h:outputText value="#{fila.nombre}" />
+                </p:column>
+                <p:column filterBy="#{fila.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="Descripcion" />
+                    </f:facet>
+                    <h:outputText value="#{fila.descripcion}" />
+                </p:column>
+
+            </p:dataTable>
+        </c:if>
+    </composite:implementation>
+
+</html>

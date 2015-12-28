@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/masterLayout.xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.prime.com.tr/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
+
+    <ui:define name="titulo_ventana">Registrar Proveedor</ui:define>
+    <ui:define name="titulo_pagina">Registrar Proveedor</ui:define>
+    <ui:define name="pagina">
+        <h:form prependId="false">
+            <p>A continuación se muestran los los campos requeridos para registrar un nuevo proveedor:</p>
+            <componentes:datosProveedores proveedor="#{VistaRegistrarNuevoProveedor.nuevoProveedor}" editable="true"/>
+            <div class="botonesBottom">
+                <p:commandButton ajax="false" value="Volver" immediate="true" action="#{VistaRegistrarNuevoProveedor.descartarCambiosProveedor()}"/>
+                <p:commandButton ajax="false" value="Registrar Proveedor" action="#{VistaRegistrarNuevoProveedor.registrarProveedor()}"/>
+            </div>
+            <p:messages />
+        </h:form>
+        <componentes:dialogoDirecciones editable="true" />
+        <componentes:dialogoTelefonos editable="true" />
+    </ui:define>
+</ui:composition>
+
+
